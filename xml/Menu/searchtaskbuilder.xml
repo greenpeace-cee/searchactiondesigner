@@ -24,4 +24,16 @@
     <title>FieldType</title>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
+  <item>
+    <path>civicrm/searchtaskbuilder/action</path>
+    <page_callback>CRM_Searchtaskbuilder_Form_Action</page_callback>
+    <title>Action</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/searchtaskbuilder/actionconfiguration</path>
+    <page_callback>CRM_Searchtaskbuilder_Form_ActionConfiguration</page_callback>
+    <title>ActionConfiguration</title>
+    <access_arguments>access CiviCRM</access_arguments>
+  </item>
 </menu>

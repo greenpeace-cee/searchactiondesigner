@@ -50,7 +50,7 @@
 
   {if $search_task_id}
     {include file="CRM/Searchtaskbuilder/Form/Blocks/Fields.tpl"}
-    {*include file="CRM/Searchtaskbuilder/Form/SearchtaskbuilderBlocks/Actions.tpl"*}
+    {include file="CRM/Searchtaskbuilder/Form/Blocks/Actions.tpl"}
   {/if}
 
 {/if}

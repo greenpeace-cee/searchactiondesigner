@@ -47,7 +47,7 @@ class CRM_Searchtaskbuilder_Form_SearchTask extends CRM_Core_Form {
 
     if ($this->searchTaskId) {
       $this->addFields();
-      //$this->addActions();
+      $this->addActions();
       $addActionUrl = CRM_Utils_System::url('civicrm/searchtaskbuilder/action', 'reset=1&action=add&search_task_id='.$this->searchTaskId, TRUE);
       $this->assign('addActionUrl', $addActionUrl);
     }
@@ -168,6 +168,14 @@ class CRM_Searchtaskbuilder_Form_SearchTask extends CRM_Core_Form {
     $fields = civicrm_api3('SearchTaskField', 'get', array('search_task_id' => $this->searchTaskId, 'options' => array('limit' => 0)));
     CRM_Utils_Weight::addOrder($fields['values'], 'CRM_Searchtaskbuilder_DAO_SearchTaskField', 'id', $this->currentUrl, 'search_task_id='.$this->searchTaskId);
     $this->assign('fields', $fields['values']);
+  }
+
+  protected function addActions() {
+    $provider = searchtaskbuilder_get_action_provider();
+    $this->assign('action_types', $provider->getActionTitles());
+    $actions = civicrm_api3('SearchTaskAction', 'get', array('search_task_id' => $this->searchTaskId, 'options' => array('limit' => 0)));
+    CRM_Utils_Weight::addOrder($actions['values'], 'CRM_Searchtaskbuilder_DAO_SearchTaskAction', 'id', $this->currentUrl, 'search_task_id='.$this->searchTaskId);
+    $this->assign('actions', $actions['values']);
   }
 
 

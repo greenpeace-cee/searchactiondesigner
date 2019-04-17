@@ -25,10 +25,17 @@
     <comment>FK to Search Task</comment>
   </field>
   <field>
-    <name>description</name>
-    <title>Description</title>
+    <name>name</name>
+    <title>Name</title>
     <type>varchar</type>
     <required>false</required>
+    <length>255</length>
+  </field>
+  <field>
+    <name>title</name>
+    <title>Title</title>
+    <type>varchar</type>
+    <required>true</required>
     <length>255</length>
   </field>
   <field>
@@ -44,6 +51,7 @@
     <type>text</type>
     <required>false</required>
     <length>255</length>
+    <serialize>JSON</serialize>
   </field>
   <field>
     <name>configuration</name>

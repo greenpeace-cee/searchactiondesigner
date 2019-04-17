@@ -106,7 +106,8 @@ CREATE TABLE `civicrm_search_task_action` (
 
      `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique SearchTaskAction ID',
      `search_task_id` int unsigned NOT NULL   COMMENT 'FK to Search Task',
-     `description` varchar(255) NULL   ,
+     `name` varchar(255) NULL   ,
+     `title` varchar(255) NOT NULL   ,
      `type` varchar(255) NOT NULL   ,
      `mapping` text NULL   ,
      `configuration` text NULL   ,

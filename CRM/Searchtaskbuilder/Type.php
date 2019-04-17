@@ -19,6 +19,7 @@ class CRM_Searchtaskbuilder_Type {
         'contact' => [
           'title' => E::ts('Contact search tasks'),
           'class' => 'CRM_Searchtaskbuilder_Form_Task_Contact',
+          'id_field_title' => E::ts('Contact ID'),
         ],
         // @Todo Implement the types below
         /*'activity' => ['title' => E::ts('Activity search tasks')],
@@ -48,9 +49,26 @@ class CRM_Searchtaskbuilder_Type {
     return $titles;
   }
 
+  /**
+   * Returns the class name of the task type
+   *
+   * @param $type
+   * @return mixed
+   */
   public static function getClassNameByType($type) {
     $types = self::getTypes();
     return $types[$type]['class'];
+  }
+
+  /**
+   * Returns the title of the task type ID field
+   *
+   * @param $type
+   * @return mixed
+   */
+  public static function getIdFieldTitle($type) {
+    $types = self::getTypes();
+    return $types[$type]['id_field_title'];
   }
 
 }

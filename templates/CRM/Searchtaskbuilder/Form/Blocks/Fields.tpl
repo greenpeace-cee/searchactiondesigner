@@ -1,7 +1,7 @@
 {crmScope extensionKey='searchtaskbuilder'}
     <h3>{ts}Fields{/ts}</h3>
 
-    <div class="crm-block crm-form-block crm-data-processor_source-block">
+    <div class="crm-block crm-form-block crm-searchtaskbuilder-fields-block">
         <table>
             <tr>
                 <th>{ts}Title{/ts}</th>
@@ -33,7 +33,7 @@
         </table>
 
         <div class="crm-submit-buttons">
-            <a class="add button" title="{ts}Add Field{/ts}" href="{crmURL p="civicrm/searchtaskbuilder/field" q="reset=1&action=add&search_task_id=`$field.search_task_id`"}">
+            <a class="add button" title="{ts}Add Field{/ts}" href="{crmURL p="civicrm/searchtaskbuilder/field" q="reset=1&action=add&search_task_id=`$search_task_id`"}">
                 <span><div class="icon add-icon ui-icon-circle-plus"></div>{ts}Add Field{/ts}</span></a>
         </div>
     </div>

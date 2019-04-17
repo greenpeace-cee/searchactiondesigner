@@ -3,24 +3,29 @@ use CRM_Searchtaskbuilder_ExtensionUtil as E;
 
 class CRM_Searchtaskbuilder_BAO_SearchTaskAction extends CRM_Searchtaskbuilder_DAO_SearchTaskAction {
 
-  /**
-   * Create a new SearchTaskAction based on array-data
-   *
-   * @param array $params key-value pairs
-   * @return CRM_Searchtaskbuilder_DAO_SearchTaskAction|NULL
-   *
-  public static function create($params) {
-    $className = 'CRM_Searchtaskbuilder_DAO_SearchTaskAction';
-    $entityName = 'SearchTaskAction';
-    $hook = empty($params['id']) ? 'create' : 'edit';
+  public static function checkName($title, $search_task_id, $id=null,$name=null) {
+    if (!$name) {
+      $name = preg_replace('@[^a-z0-9_]+@','_',strtolower($title));
+    }
 
-    CRM_Utils_Hook::pre($hook, $entityName, CRM_Utils_Array::value('id', $params), $params);
-    $instance = new $className();
-    $instance->copyValues($params);
-    $instance->save();
-    CRM_Utils_Hook::post($hook, $entityName, $instance->id, $instance);
+    $name = preg_replace('@[^a-z0-9_]+@','_',strtolower($name));
+    $name_part = $name;
 
-    return $instance;
-  } */
+    $sql = "SELECT COUNT(*) FROM civicrm_search_task_action WHERE `name` = %1 AND `search_task_id` = %2";
+    $sqlParams[1] = array($name, 'String');
+    $sqlParams[2] = array($search_task_id, 'String');
+    if (isset($id)) {
+      $sql .= " AND `id` != %3";
+      $sqlParams[3] = array($id, 'Integer');
+    }
+
+    $i = 1;
+    while(CRM_Core_DAO::singleValueQuery($sql, $sqlParams) > 0) {
+      $i++;
+      $name = $name_part .'_'.$i;
+      $sqlParams[1] = array($name, 'String');
+    }
+    return $name;
+  }
 
 }

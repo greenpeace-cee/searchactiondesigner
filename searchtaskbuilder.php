@@ -13,6 +13,18 @@ function searchtaskbuilder_get_provider() {
 }
 
 /**
+ * @return \Civi\ActionProvider\Provider
+ */
+function searchtaskbuilder_get_action_provider() {
+  $container = \Civi::container();
+  if ($container->has('action_provider')) {
+    $action_provider_container = $container->get('action_provider');
+    return $action_provider_container->getProviderByContext('searchtaskbuilder');
+  }
+  return null;
+}
+
+/**
  * Implements hook_civicrm_searchTasks().
  *
  * @param $objectType
