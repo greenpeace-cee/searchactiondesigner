@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Searchtaskbuilder</base>
+  <class>SearchTask</class>
+  <name>civicrm_search_task</name>
+  <log>false</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique SearchTask ID</comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>title</name>
+    <title>Title</title>
+    <type>varchar</type>
+    <required>true</required>
+    <length>255</length>
+  </field>
+  <field>
+    <name>description</name>
+    <title>Description</title>
+    <type>text</type>
+    <required>false</required>
+    <length>255</length>
+  </field>
+  <field>
+    <name>help_text</name>
+    <title>Help text</title>
+    <type>text</type>
+    <required>false</required>
+    <length>255</length>
+  </field>
+  <field>
+    <name>type</name>
+    <title>Type</title>
+    <type>varchar</type>
+    <required>true</required>
+    <length>255</length>
+  </field>
+  <field>
+    <name>is_active</name>
+    <title>Is active</title>
+    <type>boolean</type>
+    <required>true</required>
+  </field>
+  <field>
+    <name>status</name>
+    <title>Status</title>
+    <type>int unsigned</type>
+    <required>false</required>
+    <default>0</default>
+  </field>
+  <field>
+    <name>source_file</name>
+    <title>Source File</title>
+    <type>varchar</type>
+    <required>false</required>
+    <length>255</length>
+  </field>
+
+</table>

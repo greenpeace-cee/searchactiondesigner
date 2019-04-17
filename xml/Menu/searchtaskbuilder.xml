@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/searchtaskbuilder/manage</path>
+    <page_callback>CRM_Searchtaskbuilder_Form_ManageSearchTasks</page_callback>
+    <title>Manage Search Task</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/searchtaskbuilder/edit</path>
+    <page_callback>CRM_Searchtaskbuilder_Form_SearchTask</page_callback>
+    <title>SearchTask</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/searchtaskbuilder/field</path>
+    <page_callback>CRM_Searchtaskbuilder_Form_Field</page_callback>
+    <title>AddField</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
+    <path>civicrm/searchtaskbuilder/fieldtype</path>
+    <page_callback>CRM_Searchtaskbuilder_Form_FieldType</page_callback>
+    <title>FieldType</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+</menu>

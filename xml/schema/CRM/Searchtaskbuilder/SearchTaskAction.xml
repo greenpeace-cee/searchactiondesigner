@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+
+<table>
+  <base>CRM/Searchtaskbuilder</base>
+  <class>SearchTaskAction</class>
+  <name>civicrm_search_task_action</name>
+  <log>false</log>
+
+  <field>
+    <name>id</name>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>Unique SearchTaskAction ID</comment>
+  </field>
+  <primaryKey>
+    <name>id</name>
+    <autoincrement>true</autoincrement>
+  </primaryKey>
+
+  <field>
+    <name>search_task_id</name>
+    <title>Search Task</title>
+    <type>int unsigned</type>
+    <required>true</required>
+    <comment>FK to Search Task</comment>
+  </field>
+  <field>
+    <name>description</name>
+    <title>Description</title>
+    <type>varchar</type>
+    <required>false</required>
+    <length>255</length>
+  </field>
+  <field>
+    <name>type</name>
+    <title>Type</title>
+    <type>varchar</type>
+    <required>true</required>
+    <length>255</length>
+  </field>
+  <field>
+    <name>mapping</name>
+    <title>Mapping</title>
+    <type>text</type>
+    <required>false</required>
+    <length>255</length>
+  </field>
+  <field>
+    <name>configuration</name>
+    <title>Configuration</title>
+    <type>text</type>
+    <required>false</required>
+    <length>255</length>
+    <serialize>JSON</serialize>
+  </field>
+  <field>
+    <name>condition_configuration</name>
+    <title>Condition Configuration</title>
+    <type>text</type>
+    <required>false</required>
+    <length>255</length>
+    <serialize>JSON</serialize>
+  </field>
+  <field>
+    <name>weight</name>
+    <title>Weight</title>
+    <type>int</type>
+    <required>false</required>
+    <length>255</length>
+  </field>
+  <foreignKey>
+    <name>search_task_id</name>
+    <table>civicrm_search_task</table>
+    <key>id</key>
+    <onDelete>CASCADE</onDelete>
+  </foreignKey>
+
+</table>
