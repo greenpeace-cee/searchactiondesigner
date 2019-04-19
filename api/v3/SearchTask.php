@@ -1,5 +1,5 @@
 <?php
-use CRM_Searchtaskbuilder_ExtensionUtil as E;
+use CRM_Searchactiondesigner_ExtensionUtil as E;
 
 /**
  * SearchTask.create API specification (optional)
@@ -10,7 +10,7 @@ use CRM_Searchtaskbuilder_ExtensionUtil as E;
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_search_task_create_spec(&$spec) {
-  $fields = CRM_Searchtaskbuilder_BAO_SearchTask::fields();
+  $fields = CRM_Searchactiondesigner_BAO_SearchTask::fields();
   foreach($fields as $fieldname => $field) {
     $spec[$fieldname] = $field;
     if ($fieldname != 'id' && isset($field['required']) && $field['required']) {
@@ -50,7 +50,7 @@ function civicrm_api3_search_task_delete($params) {
  * @see https://docs.civicrm.org/dev/en/latest/framework/api-architecture/
  */
 function _civicrm_api3_search_task_get_spec(&$spec) {
-  $fields = CRM_Searchtaskbuilder_BAO_SearchTask::fields();
+  $fields = CRM_Searchactiondesigner_BAO_SearchTask::fields();
   foreach($fields as $fieldname => $field) {
     $spec[$fieldname] = $field;
   }

@@ -1,0 +1,38 @@
+<?php
+/**
+ * @author Jaap Jansma <jaap.jansma@civicoop.org>
+ * @license AGPL-3.0
+ */
+
+use CRM_Searchactiondesigner_ExtensionUtil as E;
+
+class CRM_Searchactiondesigner_Form_Task_Task extends CRM_Case_Form_Task {
+
+  protected $searchTaskId;
+  protected $searchTask;
+
+  public function preProcess() {
+    parent::preProcess();
+
+    if (strpos($this->_task,'searchactiondesigner_') !== 0) {
+      throw new \Exception(E::ts('Invalid search task'));
+    }
+    $this->searchTaskId = substr($this->_task, 18);
+
+    $this->searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
+    $this->assign('searchTask', $this->searchTask);
+  }
+
+  public function buildQuickForm() {
+    CRM_Searchactiondesigner_Form_Task_Helper::buildQuickForm($this, $this->searchTaskId);
+    $this->addDefaultButtons(E::ts('Next'));
+  }
+
+  public function postProcess() {
+    $submittedValues = $this->controller->exportValues();
+    var_dump($this->_entityIds); exit();
+    CRM_Searchactiondesigner_Form_Task_Helper::postProcess($this->searchTaskId, $submittedValues, $this->_entityIds);
+  }
+
+
+}

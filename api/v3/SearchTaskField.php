@@ -1,5 +1,5 @@
 <?php
-use CRM_Searchtaskbuilder_ExtensionUtil as E;
+use CRM_Searchactiondesigner_ExtensionUtil as E;
 
 /**
  * SearchTaskField.create API specification (optional)
@@ -10,7 +10,7 @@ use CRM_Searchtaskbuilder_ExtensionUtil as E;
  * @see http://wiki.civicrm.org/confluence/display/CRMDOC/API+Architecture+Standards
  */
 function _civicrm_api3_search_task_field_create_spec(&$spec) {
-  $fields = CRM_Searchtaskbuilder_BAO_SearchTaskField::fields();
+  $fields = CRM_Searchactiondesigner_BAO_SearchTaskField::fields();
   foreach($fields as $fieldname => $field) {
     $spec[$fieldname] = $field;
     if ($fieldname != 'id' && isset($field['required']) && $field['required']) {
@@ -28,13 +28,13 @@ function _civicrm_api3_search_task_field_create_spec(&$spec) {
  */
 function civicrm_api3_search_task_field_create($params) {
   if (!isset($params['weight']) && !isset($params['id'])) {
-    $params['weight'] = CRM_Utils_Weight::getDefaultWeight('CRM_Searchtaskbuilder_DAO_SearchTaskField', array('search_task_id' => $params['search_task_id']));
+    $params['weight'] = CRM_Utils_Weight::getDefaultWeight('CRM_Searchactiondesigner_DAO_SearchTaskField', array('search_task_id' => $params['search_task_id']));
   }
   $id = null;
   if (isset($params['id'])) {
     $id = $params['id'];
   }
-  $params['name'] = CRM_Searchtaskbuilder_BAO_SearchTaskField::checkName($params['title'], $params['search_task_id'], $id, $params['name']);
+  $params['name'] = CRM_Searchactiondesigner_BAO_SearchTaskField::checkName($params['title'], $params['search_task_id'], $id, $params['name']);
   return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
 
@@ -58,7 +58,7 @@ function civicrm_api3_search_task_field_delete($params) {
 * @see https://docs.civicrm.org/dev/en/latest/framework/api-architecture/
 */
 function _civicrm_api3_search_task_field_get_spec(&$spec) {
-  $fields = CRM_Searchtaskbuilder_BAO_SearchTaskField::fields();
+  $fields = CRM_Searchactiondesigner_BAO_SearchTaskField::fields();
   foreach($fields as $fieldname => $field) {
     $spec[$fieldname] = $field;
   }
@@ -116,7 +116,7 @@ function _civicrm_api3_search_task_field_check_name_spec($params) {
  * @param $params
  */
 function civicrm_api3_search_task_field_check_name($params) {
-  $name = CRM_Searchtaskbuilder_BAO_SearchTaskField::checkName($params['title'], $params['search_task_id'], $params['id'], $params['name']);
+  $name = CRM_Searchactiondesigner_BAO_SearchTaskField::checkName($params['title'], $params['search_task_id'], $params['id'], $params['name']);
   return array(
     'name' => $name,
   );

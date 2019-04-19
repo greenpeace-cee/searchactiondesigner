@@ -5,7 +5,7 @@ return array (
   0 => 
   array (
     'name' => 'SearchTask',
-    'class' => 'CRM_Searchtaskbuilder_DAO_SearchTask',
+    'class' => 'CRM_Searchactiondesigner_DAO_SearchTask',
     'table' => 'civicrm_search_task',
   ),
 );

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 
 <table>
-  <base>CRM/Searchtaskbuilder</base>
+  <base>CRM/Searchactiondesigner</base>
   <class>SearchTaskAction</class>
   <name>civicrm_search_task_action</name>
   <log>false</log>

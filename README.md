@@ -1,4 +1,4 @@
-# searchtaskbuilder
+# searchactiondesigner
 
 ![Screenshot](/images/screenshot.png)
 
@@ -22,7 +22,7 @@ install it with the command-line tool [cv](https://github.com/civicrm/cv).
 
 ```bash
 cd <extension-dir>
-cv dl searchtaskbuilder@https://github.com/FIXME/searchtaskbuilder/archive/master.zip
+cv dl searchactiondesigner@https://github.com/FIXME/searchactiondesigner/archive/master.zip
 ```
 
 ## Installation (CLI, Git)
@@ -31,8 +31,8 @@ Sysadmins and developers may clone the [Git](https://en.wikipedia.org/wiki/Git) 
 install it with the command-line tool [cv](https://github.com/civicrm/cv).
 
 ```bash
-git clone https://github.com/FIXME/searchtaskbuilder.git
-cv en searchtaskbuilder
+git clone https://github.com/FIXME/searchactiondesigner.git
+cv en searchactiondesigner
 ```
 
 ## Usage

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<extension key="searchtaskbuilder" type="module">
-  <file>searchtaskbuilder</file>
-  <name>Search Task Builder</name>
-  <description>Search task builder</description>
+<extension key="searchactiondesigner" type="module">
+  <file>searchactiondesigner</file>
+  <name>Search Action Designer</name>
+  <description>With this extension you can create your own search actions. This extension requires the action-provider extension.</description>
   <license>AGPL-3.0</license>
   <maintainer>
-    <author>FIXME</author>
-    <email>FIXME</email>
+    <author>Jaap Jansma</author>
+    <email>jaap.jansma@civicoop.org</email>
   </maintainer>
   <urls>
     <url desc="Main Extension Page">http://FIXME</url>
@@ -20,12 +20,11 @@
   <compatibility>
     <ver>5.0</ver>
   </compatibility>
-  <comments>This is a new, undeveloped module</comments>
   <classloader>
     <psr4 prefix="Civi\" path="Civi" />
   </classloader>
   <civix>
-    <namespace>CRM/Searchtaskbuilder</namespace>
+    <namespace>CRM/Searchactiondesigner</namespace>
   </civix>
   <requires>
     <ext>action-provider</ext>
