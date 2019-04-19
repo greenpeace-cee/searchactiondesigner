@@ -12,7 +12,7 @@ The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
 * PHP v5.6+
 * CiviCRM (5.0 or newer)
-* [Action Provider](http://lab.civicrm.org/extensions/action-provider) (version 1.3 or newer)
+* [Action Provider](http://lab.civicrm.org/extensions/action-provider) (version 1.2 or newer)
 
 ## Installation (Web UI)
 
