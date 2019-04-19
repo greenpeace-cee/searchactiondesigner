@@ -25,7 +25,7 @@ install it with the command-line tool [cv](https://github.com/civicrm/cv).
 
 ```bash
 cd <extension-dir>
-cv dl searchactiondesigner@https://lab.civicrm.org/extensions/searchactiondesigner/archive/master.zip
+cv dl searchactiondesigner@https://lab.civicrm.org/extensions/searchactiondesigner/-/archive/master/searchactiondesigner-master.zip
 ```
 
 ## Installation (CLI, Git)
@@ -34,13 +34,18 @@ Sysadmins and developers may clone the [Git](https://en.wikipedia.org/wiki/Git) 
 install it with the command-line tool [cv](https://github.com/civicrm/cv).
 
 ```bash
-git clone https://github.com/FIXME/searchactiondesigner.git
+git clone https://lab.civicrm.org/extensions/searchactiondesigner.git
 cv en searchactiondesigner
 ```
 
 ## Usage
 
-(* FIXME: Where would a new user navigate to get started? What changes would they see? *)
+After you have installed this extension you can design your search action under Administer --> Customize Data and Screens --> Search Action Designer.
+
+## Developer documentation
+
+* [Hook documentation](docs/hooks.md)
+* [How to add your own field](docs/add_your_own_field_type.md)
 
 ## Known Issues
 
