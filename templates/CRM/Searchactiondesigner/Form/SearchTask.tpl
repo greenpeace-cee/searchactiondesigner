@@ -42,8 +42,18 @@
       <div class="clear"></div>
     </div>
     <div class="crm-section">
+      <div class="label">{$form.success_message.label}</div>
+      <div class="content">{$form.success_message.html}</div>
+      <div class="clear"></div>
+    </div>
+    <div class="crm-section">
       <div class="label">{$form.is_active.label}</div>
       <div class="content">{$form.is_active.html}</div>
+      <div class="clear"></div>
+    </div>
+    <div class="crm-section">
+      <div class="label">{$form.records_per_batch.label}</div>
+      <div class="content">{$form.records_per_batch.html}</div>
       <div class="clear"></div>
     </div>
   </div>

@@ -18,6 +18,7 @@ class Provider {
     $this->addFieldType('text', 'Civi\Searchactiondesigner\Field\TextField', E::ts('Text field'));
     $this->addFieldType('option_group', 'Civi\Searchactiondesigner\Field\OptionGroupField', E::ts('Option Group'));
     $this->addFieldType('group', 'Civi\Searchactiondesigner\Field\GroupField', E::ts('Group'));
+    $this->addFieldType('message_template', 'Civi\Searchactiondesigner\Field\MessageTemplate', E::ts('Message Template'));
   }
 
 

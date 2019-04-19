@@ -65,9 +65,12 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
         'placeholder' => E::ts('- select -'),
       ));
       $this->add('text', 'title', E::ts('Title'), array('size' => 100, 'maxlength' => 255), TRUE);
-      $this->add('text', 'description', E::ts('Description'), array('size' => 100, 'maxlength' => 255));
+      $this->add('text', 'description', E::ts('Description'), array('size' => 255, 'maxlength' => 255));
+      $this->add('text', 'success_message', E::ts('Success Message'), array('size' => 255, 'maxlength' => 255));
       $this->add('wysiwyg', 'help_text', E::ts('Help text for this search task'), array('rows' => 6, 'cols' => 80));
       $this->add('checkbox', 'is_active', E::ts('Enabled'));
+      $this->add('text', 'records_per_batch', E::ts('Records per batch'), array('size' => 4, 'maxlength' => 4), TRUE);
+      $this->addRule('records_per_batch', E::ts("Invalid number"), 'numeric');
     }
     if ($this->_action == CRM_Core_Action::ADD) {
       $this->addButtons(array(
@@ -124,6 +127,8 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
     $params['title'] = $values['title'];
     $params['description'] = $values['description'];
     $params['help_text'] = $values['help_text'];
+    $params['success_message'] = $values['success_message'];
+    $params['records_per_batch'] = $values['records_per_batch'];
     $params['is_active'] = !empty($values['is_active']) ? 1 : 0;
     if ($this->searchTaskId) {
       $params['id'] = $this->searchTaskId;
@@ -142,6 +147,8 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
    */
   protected function setAddDefaults(&$defaults) {
     $defaults['is_active'] = 1;
+    $defaults['success_message'] = E::ts('Action done');
+    $defaults['records_per_batch'] = 25;
   }
 
   /**
@@ -165,6 +172,8 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
       } else {
         $defaults['help_text'] = '';
       }
+      $defaults['success_message'] = $searchTask['success_message'];
+      $defaults['records_per_batch'] = $searchTask['records_per_batch'];
       $defaults['is_active'] = $searchTask['is_active'];
     }
   }

@@ -8,10 +8,6 @@ use CRM_Searchactiondesigner_ExtensionUtil as E;
 
 class CRM_Searchactiondesigner_Form_Task_Helper {
 
-  const MAX_DIRECT_SIZE = 50;
-
-  const RECORD_PER_JOB = 50;
-
   private static $fields = array();
 
   private static $actions = array();
@@ -67,7 +63,7 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
       }
     }
 
-    if (count($ids) <= self::MAX_DIRECT_SIZE) {
+    if (count($ids) <= $search_task['records_per_batch']) {
       // Process directly
       self::processItems($ids, $inputMapping, $search_task_id);
     } else {
@@ -83,10 +79,10 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
       ));
 
       $total = count($ids);
-      $batches =  array_chunk($ids, self::RECORD_PER_JOB);
+      $batches =  array_chunk($ids, $search_task['records_per_batch']);
       $i = 0;
       foreach($batches as $batch) {
-        $i = $i + self::RECORD_PER_JOB;
+        $i = $i + $search_task['records_per_batch'];
         $title = $search_task['title'] . ' ' . $i .'/'.$total;
         //create a task without parameters
         $task = new CRM_Queue_Task(
@@ -127,8 +123,14 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
    * @return bool
    * @throws \CiviCRM_API3_Exception
    */
-  public static function processBatch($ctx, $search_task_id, $inputMapping, $batch) {
+  public static function processBatch(CRM_Queue_TaskContext $ctx, $search_task_id, $inputMapping, $batch) {
     self::processItems($batch, $inputMapping, $search_task_id);
+    if ($ctx->queue->numberOfItems() <= 1) {
+      $search_task = civicrm_api3('SearchTask', 'getsingle', array('id' => $search_task_id));
+      if (isset($search_task['success_message']) && !empty($search_task['success_message'])) {
+        CRM_Core_Session::setStatus($search_task['success_message'], $search_task['title'], 'success');
+      }
+    }
     return TRUE;
   }
 

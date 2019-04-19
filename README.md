@@ -1,15 +1,18 @@
-# searchactiondesigner
+# Search Action Designer
 
-![Screenshot](/images/screenshot.png)
+With this extension you can build your own search actions. 
 
-(*FIXME: In one or two paragraphs, describe what the extension does and why one would download it. *)
+![Screenshot1](/images/screenshot1.png)
+![Screenshot2](/images/screenshot2.png)
+![Screenshot3](/images/screenshot3.png)
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
 ## Requirements
 
 * PHP v5.6+
-* CiviCRM (*FIXME: Version number*)
+* CiviCRM (5.0 or newer)
+* [Action Provider](http://lab.civicrm.org/extensions/action-provider) (version 1.3 or newer)
 
 ## Installation (Web UI)
 
@@ -22,7 +25,7 @@ install it with the command-line tool [cv](https://github.com/civicrm/cv).
 
 ```bash
 cd <extension-dir>
-cv dl searchactiondesigner@https://github.com/FIXME/searchactiondesigner/archive/master.zip
+cv dl searchactiondesigner@https://lab.civicrm.org/extensions/searchactiondesigner/archive/master.zip
 ```
 
 ## Installation (CLI, Git)

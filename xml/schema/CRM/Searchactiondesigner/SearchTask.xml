@@ -32,6 +32,13 @@
     <length>255</length>
   </field>
   <field>
+    <name>success_message</name>
+    <title>Success Message</title>
+    <type>text</type>
+    <required>false</required>
+    <length>255</length>
+  </field>
+  <field>
     <name>help_text</name>
     <title>Help text</title>
     <type>text</type>
@@ -57,6 +64,13 @@
     <type>int unsigned</type>
     <required>false</required>
     <default>0</default>
+  </field>
+  <field>
+    <name>records_per_batch</name>
+    <title>Number of records per batch</title>
+    <type>int unsigned</type>
+    <required>true</required>
+    <default>25</default>
   </field>
   <field>
     <name>source_file</name>
