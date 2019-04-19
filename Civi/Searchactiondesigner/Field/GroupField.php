@@ -27,12 +27,12 @@ class GroupField extends AbstractField {
    */
   public function buildConfigurationForm(\CRM_Core_Form $form, $field=array()) {
     // Example add a checkbox to the form.
-    $group_type_api = civicrm_api3('OptionValye', 'get', array('is_active' => 1, 'option_group_id' => 'group_type', 'options' => array('limit' => 0)));
+    $group_type_api = civicrm_api3('OptionValue', 'get', array('is_active' => 1, 'option_group_id' => 'group_type', 'options' => array('limit' => 0)));
     $group_types = array();
     foreach($group_type_api['values'] as $group_type) {
-      $group_types[$group_type['value']] = $group_type['title'];
+      $group_types[$group_type['value']] = $group_type['label'];
     }
-    $form->add('select', 'group_type', E::ts('Group Type'), $group_type, false, array(
+    $form->add('select', 'group_type', E::ts('Group Type'), $group_types, false, array(
       'style' => 'min-width:250px',
       'class' => 'crm-select2 huge',
       'placeholder' => E::ts('- select -'),

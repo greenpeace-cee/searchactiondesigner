@@ -65,8 +65,10 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
   }
 
   public function buildQuickForm() {
-    $this->add('hidden', 'search_task_id');
-    $this->add('hidden', 'id');
+    if (!$this->snippet) {
+      $this->add('hidden', 'search_task_id');
+      $this->add('hidden', 'id');
+    }
 
     if ($this->_action == CRM_Core_Action::DELETE) {
       $this->addButtons(array(
@@ -154,7 +156,7 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
       ));
       $actionProviderMappingFields[] = $name;
 
-      if (isset($currentMapping[$spec->getName()])) {
+      if (isset($this->actionMapping[$spec->getName()])) {
         $defaults[$name] = $this->actionMapping[$spec->getName()];
       }
     }
@@ -164,7 +166,7 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
 
   public function processMapping($submittedValues) {
     $return = array();
-    foreach($this->actionCLass->getParameterSpecification() as $spec) {
+    foreach($this->actionClass->getParameterSpecification() as $spec) {
       $name = $this->actionType.'_mapping_'.$spec->getName();
       if (isset($submittedValues[$name])) {
         $return[$spec->getName()] = $submittedValues[$name];

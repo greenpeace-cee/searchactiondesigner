@@ -59,18 +59,18 @@
   <script type="text/javascript">
     {literal}
     CRM.$(function($) {
+      var id = {/literal}{if ($field)}{$field.id}{else}false{/if}{literal};
+      var search_task_id = {/literal}{$search_task_id}{literal};
       $('#type').on('change', function() {
         var type = $('#type').val();
         if (type) {
-          var dataUrl = CRM.url('civicrm/searchactiondesigner/field', {type: type});
+          var dataUrl = CRM.url('civicrm/searchactiondesigner/field', {type: type, 'search_task_id': search_task_id, 'id': id});
           CRM.loadPage(dataUrl, {'target': '#type_configuration'});
         }
       });
 
       $('#title').on('blur', function() {
         var title = $('#title').val();
-        var id = {/literal}{if ($field)}{$field.id}{else}false{/if}{literal};
-        var search_task_id = {/literal}{$search_task_id}{literal};
         if ($('#nameSection').hasClass('hiddenElement') && !id) {
           CRM.api3('SearchTaskField', 'check_name', {
             'title': title,

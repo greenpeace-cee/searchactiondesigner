@@ -52,10 +52,9 @@ class CRM_Searchactiondesigner_Form_Field extends CRM_Core_Form {
   }
 
   public function buildQuickForm() {
-    $this->add('hidden', 'search_task_id');
-    $this->add('hidden', 'id');
-
     if ($this->_action == CRM_Core_Action::DELETE) {
+      $this->add('hidden', 'search_task_id');
+      $this->add('hidden', 'id');
       $this->addButtons(array(
         array('type' => 'next', 'name' => E::ts('Delete'), 'isDefault' => TRUE,),
         array('type' => 'cancel', 'name' => E::ts('Cancel'))
@@ -63,25 +62,30 @@ class CRM_Searchactiondesigner_Form_Field extends CRM_Core_Form {
       return parent::buildQuickForm();
     }
 
-    $provider = searchactiondesigner_get_provider();
-    $this->add('select', 'type', E::ts('Type'), $provider->getFieldTypes(), true, array(
-      'style' => 'min-width:250px',
-      'class' => 'crm-select2 huge',
-      'placeholder' => E::ts('- select -'),
-    ));
-    $this->add( 'text','title', E::ts('Title'), array('size' => 100, 'maxlength' => 255), true);
-    $this->add( 'text','name', E::ts('Name'), array('size' => 100, 'maxlength' => 255), false);
-    $this->add('checkbox', 'is_required', E::ts('Is required'));
+    if (!$this->snippet) {
+      $this->add('hidden', 'search_task_id');
+      $this->add('hidden', 'id');
+      $provider = searchactiondesigner_get_provider();
+      $this->add('select', 'type', E::ts('Type'), $provider->getFieldTypes(), true, array(
+        'style' => 'min-width:250px',
+        'class' => 'crm-select2 huge',
+        'placeholder' => E::ts('- select -'),
+      ));
+      $this->add( 'text','title', E::ts('Title'), array('size' => 100, 'maxlength' => 255), true);
+      $this->add( 'text','name', E::ts('Name'), array('size' => 100, 'maxlength' => 255), false);
+      $this->add('checkbox', 'is_required', E::ts('Is required'));
+
+
+      $this->addButtons(array(
+        array('type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE,),
+        array('type' => 'cancel', 'name' => E::ts('Cancel'))
+      ));
+    }
 
     if ($this->fieldTypeClass && $this->fieldTypeClass->hasConfiguration()) {
       $this->fieldTypeClass->buildConfigurationForm($this, $this->field);
       $this->assign('configuration_template', $this->fieldTypeClass->getConfigurationTemplateFileName());
     }
-
-    $this->addButtons(array(
-      array('type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE,),
-      array('type' => 'cancel', 'name' => E::ts('Cancel'))
-    ));
 
     parent::buildQuickForm();
   }
@@ -117,7 +121,7 @@ class CRM_Searchactiondesigner_Form_Field extends CRM_Core_Form {
     $params['is_required'] = isset($values['is_required']) ? $values['is_required'] : false;
     $params['search_task_id'] = $this->searchTaskId;
     if ($this->fieldId) {
-      $defaults['id'] = $this->fieldId;
+      $params['id'] = $this->fieldId;
     }
 
     if ($this->fieldTypeClass && $this->fieldTypeClass->hasConfiguration()) {

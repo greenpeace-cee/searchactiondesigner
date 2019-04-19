@@ -43,7 +43,7 @@ There is only one option we will add and that is the group type option.
    */
   public function buildConfigurationForm(\CRM_Core_Form $form, $field=array()) {
     // Example add a checkbox to the form.
-    $group_type_api = civicrm_api3('OptionValye', 'get', array('is_active' => 1, 'option_group_id' => 'group_type', 'options' => array('limit' => 0)));
+    $group_type_api = civicrm_api3('OptionValue', 'get', array('is_active' => 1, 'option_group_id' => 'group_type', 'options' => array('limit' => 0)));
     $group_types = array();
     foreach($group_type_api['values'] as $group_type) {
       $group_types[$group_type['value']] = $group_type['title'];
