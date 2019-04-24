@@ -36,6 +36,8 @@ class CRM_Searchactiondesigner_Upgrader extends CRM_Searchactiondesigner_Upgrade
     switch ($unmet) {
       case 'action-provider':
         return ts('Search Action Designer was installed successfully, but you must also install and enable the <a href="%1">action-provider Extension (version 1.3 or newer)</a>.', array(1 => 'https://lab.civicrm.org/extensions/action-provider'));
+      case 'formfieldlibrary':
+        return ts('Search Action Designer was installed successfully, but you must also install and enable the <a href="%1">formfieldlibrary Extension</a>.', array(1 => 'https://lab.civicrm.org/extensions/formfieldlibrary'));
     }
 
     CRM_Core_Error::fatal(ts('Unknown error key: %1', array(1 => $unmet)));
