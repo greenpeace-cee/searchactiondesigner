@@ -42,35 +42,39 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
 
   public static function buildQuickForm($form, $search_task_id) {
     $fields = self::getFields($search_task_id);
-    $provider = searchactiondesigner_get_provider();
+    $fieldLibrary = searchactiondesigner_get_form_field_library();
     foreach($fields as $id => $field) {
-      $fieldClass = $provider->getFieldTypeByName($field['type']);
-      $fieldClass->addFieldToTaskForm($form, $field);
+      $fieldClass = $fieldLibrary->getFieldTypeByName($field['type']);
+      $fieldClass->addFieldToForm($form, $field);
       $fields[$id]['template'] = $fieldClass->getFieldTemplateFileName();
     }
     $form->assign('fields', $fields);
   }
 
   public static function postProcess($search_task_id, $submittedValues, $ids) {
-    $provider = searchactiondesigner_get_provider();
+    $name = 'searchactiondesigner_'.$search_task_id.'_'.date('Ymdhis').'_'.CRM_Core_Session::getLoggedInContactID();
+    $fieldLibrary = searchactiondesigner_get_form_field_library();
     $search_task = civicrm_api3('SearchTask', 'getsingle', array('id' => $search_task_id));
     $fields = self::getFields($search_task_id);
     $inputMapping = array();
     foreach($fields as $field) {
-      $fieldClass = $provider->getFieldTypeByName($field['type']);
+      $fieldClass = $fieldLibrary->getFieldTypeByName($field['type']);
       if ($fieldClass->isFieldValueSubmitted($field, $submittedValues)) {
-        $inputMapping['input.' . $field['name']] = $fieldClass->getSubmittedFieldValue($field, $submittedValues);
+        $submittedValue = $fieldClass->getSubmittedFieldValue($field, $submittedValues);
+        foreach($submittedValue as $outputName => $outputValue) {
+          $inputMapping['input.' . $field['name'].'.'.$outputName] = $outputValue;
+        }
       }
     }
 
     if (count($ids) <= $search_task['records_per_batch']) {
       // Process directly
-      self::processItems($ids, $inputMapping, $search_task_id);
+      $actionProvider = searchactiondesigner_get_action_provider();
+      self::processItems($ids, $inputMapping, $search_task_id, $name);
+      $actionProvider->finishBatch($name, true);
     } else {
       // Create a batch
       $session = CRM_Core_Session::singleton();
-
-      $name = 'searchactiondesigner_'.$search_task_id.'_'.date('Ymdhis').'_'.CRM_Core_Session::getLoggedInContactID();
 
       $queue = CRM_Queue_Service::singleton()->create(array(
         'type' => 'Sql',
@@ -124,8 +128,12 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
    * @throws \CiviCRM_API3_Exception
    */
   public static function processBatch(CRM_Queue_TaskContext $ctx, $search_task_id, $inputMapping, $batch) {
-    self::processItems($batch, $inputMapping, $search_task_id);
-    if ($ctx->queue->numberOfItems() <= 1) {
+    $actionProvider = searchactiondesigner_get_action_provider();
+    self::processItems($batch, $inputMapping, $search_task_id, $ctx->queue->getName());
+    if ($ctx->queue->numberOfItems() > 1) {
+      $actionProvider->finishBatch($ctx->queue->getName(), false);
+    } else {
+      $actionProvider->finishBatch($ctx->queue->getName(), true);
       $search_task = civicrm_api3('SearchTask', 'getsingle', array('id' => $search_task_id));
       if (isset($search_task['success_message']) && !empty($search_task['success_message'])) {
         CRM_Core_Session::setStatus($search_task['success_message'], $search_task['title'], 'success');
@@ -140,12 +148,13 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
    * @param $ids
    * @param $inputMapping
    * @param $search_task_id
+   * @param $batchName
    *
    * @throws \CiviCRM_API3_Exception
    */
-  public static function processItems($ids, $inputMapping, $search_task_id) {
+  public static function processItems($ids, $inputMapping, $search_task_id, $batchName) {
     foreach($ids as $id) {
-      self::processItem($id, $inputMapping, $search_task_id);
+      self::processItem($id, $inputMapping, $search_task_id, $batchName);
     }
   }
 
@@ -155,17 +164,17 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
    * @param $id
    * @param $inputMapping
    * @param $search_task_id
+   * @param $batchName
    *
    * @throws \CiviCRM_API3_Exception
    */
-  public static function processItem($id, $inputMapping, $search_task_id) {
+  public static function processItem($id, $inputMapping, $search_task_id, $batchName) {
     $actionProvider = searchactiondesigner_get_action_provider();
     $actions = self::getActions($search_task_id);
     $mapping = $inputMapping;
     $mapping['id'] = $id;
     foreach($actions as $action) {
-      $actionClass = $actionProvider->getActionByName($action['type']);
-      $actionClass->getConfiguration()->fromArray($action['configuration']);
+      $actionClass = $actionProvider->getBatchActionByName($action['type'], $action['configuration'], $batchName);
 
       $parameterBag = $actionProvider->createParameterBag();
       $conditionParameters = $actionProvider->createParameterBag();

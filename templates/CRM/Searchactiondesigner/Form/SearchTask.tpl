@@ -28,7 +28,21 @@
     </div>
     <div class="crm-section">
       <div class="label">{$form.title.label}</div>
-      <div class="content">{$form.title.html}</div>
+      <div class="content">
+        {$form.title.html}
+        <span class="">
+        {ts}System name:{/ts}&nbsp;
+        <span id="systemName" style="font-style: italic;">{if ($searchTask)}{$searchTask.name}{/if}</span>
+        <a href="javascript:void(0);" onclick="jQuery('#nameSection').removeClass('hiddenElement'); jQuery(this).parent().addClass('hiddenElement'); return false;">
+          {ts}Change{/ts}
+        </a>
+        </span>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div id="nameSection" class="crm-section hiddenElement">
+      <div class="label">{$form.name.label}</div>
+      <div class="content">{$form.name.html}</div>
       <div class="clear"></div>
     </div>
     <div class="crm-section">
@@ -62,6 +76,28 @@
     {include file="CRM/Searchactiondesigner/Form/Blocks/Fields.tpl"}
     {include file="CRM/Searchactiondesigner/Form/Blocks/Actions.tpl"}
   {/if}
+
+  <script type="text/javascript">
+    {literal}
+    CRM.$(function($) {
+      var id = {/literal}{if ($actionObject)}{$actionObject.id}{else}false{/if}{literal};
+
+      $('#title').on('blur', function() {
+        var title = $('#title').val();
+        if ($('#nameSection').hasClass('hiddenElement') && !id) {
+          CRM.api3('SearchTask', 'check_name', {
+            'title': title
+          }).done(function (result) {
+            $('#systemName').html(result.name);
+            $('#name').val(result.name);
+          });
+        }
+      });
+
+      $('#type').change();
+    });
+    {/literal}
+  </script>
 
 {/if}
 

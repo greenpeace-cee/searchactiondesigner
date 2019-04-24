@@ -18,7 +18,7 @@ class CRM_Searchactiondesigner_Type {
       self::$_types = array(
         'contact' => array(
           'title' => E::ts('Contact search tasks'),
-          'class' => 'CRM_Searchactiondesigner_Form_Task_Task',
+          'class' => 'CRM_Searchactiondesigner_Form_Task_Contact',
           'id_field_title' => E::ts('Contact ID'),
         ),
         'activity' => array(

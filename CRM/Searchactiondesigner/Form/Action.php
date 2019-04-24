@@ -115,6 +115,16 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
     return $defaults;
   }
 
+  /**
+   * Function that can be defined in Form to override or.
+   * perform specific action on cancel action
+   */
+  public function cancelAction() {
+    $this->searchTaskId = CRM_Utils_Request::retrieve('search_task_id', 'Integer');
+    $redirectUrl = CRM_Utils_System::url('civicrm/searchactiondesigner/edit', array('reset' => 1, 'action' => 'update', 'id' => $this->searchTaskId));
+    CRM_Utils_System::redirect($redirectUrl);
+  }
+
   public function postProcess() {
     $redirectUrl = CRM_Utils_System::url('civicrm/searchactiondesigner/edit', array('reset' => 1, 'action' => 'update', 'id' => $this->searchTaskId));
     if ($this->_action == CRM_Core_Action::DELETE) {

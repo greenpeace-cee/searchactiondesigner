@@ -76,7 +76,7 @@ class CRM_Searchactiondesigner_Form_ManageSearchTasks extends CRM_Core_Form {
 
     $this->add('text', 'title', E::ts('Title contains'), array('class' => 'huge'));
     $this->add('text', 'description', E::ts('Description contains'), array('class' => 'huge'));
-    $this->add('select', 'type', E::ts('Available for'), CRM_Searchactiondesigner_Type::getTitles(), TRUE, array(
+    $this->add('select', 'type', E::ts('Available for'), CRM_Searchactiondesigner_Type::getTitles(), FALSE, array(
       'style' => 'min-width:250px',
       'class' => 'crm-select2 huge',
       'placeholder' => E::ts('- select -'),

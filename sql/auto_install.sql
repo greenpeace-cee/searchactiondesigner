@@ -83,6 +83,7 @@ CREATE TABLE `civicrm_search_task` (
 
      `id` int unsigned NOT NULL AUTO_INCREMENT  COMMENT 'Unique SearchTask ID',
      `title` varchar(255) NOT NULL   ,
+     `name` varchar(255) NULL   ,
      `description` text NULL   ,
      `success_message` text NULL   ,
      `help_text` text NULL   ,

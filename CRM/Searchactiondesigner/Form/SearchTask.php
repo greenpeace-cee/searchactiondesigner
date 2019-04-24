@@ -24,9 +24,6 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
     $this->assign('search_task_id', $this->searchTaskId);
 
     $session = CRM_Core_Session::singleton();
-    $session->replaceUserContext($this->currentUrl);
-
-    $session = CRM_Core_Session::singleton();
     switch($this->_action) {
       case CRM_Core_Action::DISABLE:
         civicrm_api3('SearchTask', 'create', array('id' => $this->searchTaskId, 'is_ative' => 0));
@@ -44,11 +41,31 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
         CRM_Utils_System::redirect($session->readUserContext());
         break;
       case CRM_Core_Action::EXPORT:
-        //$this->assign('export', json_encode(CRM_Dataprocessor_BAO_DataProcessor::export($this->dataProcessorId), JSON_PRETTY_PRINT));
+        $export = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
+        $fields = civicrm_api3('SearchTaskField', 'get', array('search_task_id' => $this->searchTaskId, 'options' => array('limit' => 0)));
+        $actions = civicrm_api3('SearchTaskAction', 'get', array('search_task_id' => $this->searchTaskId, 'options' => array('limit' => 0)));
+        unset($export['id']);
+        unset($export['status']);
+        unset($export['source_file']);
+        $export['fields'] = array();
+        $export['actions'] = array();
+        foreach($fields['values'] as $field) {
+          unset($field['id']);
+          unset($field['search_task_id']);
+          $export['fields'][] = $field;
+        }
+        foreach($actions['values'] as $action) {
+          unset($action['id']);
+          unset($action['search_task_id']);
+          $export['fields'][] = $action;
+        }
+        $this->assign('export', json_encode($export, JSON_PRETTY_PRINT));
         break;
     }
 
     if ($this->searchTaskId) {
+      $searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
+      $this->assign('searchTask', $searchTask);
       $this->addFields();
       $this->addActions();
       $addActionUrl = CRM_Utils_System::url('civicrm/searchactiondesigner/action', 'reset=1&action=add&search_task_id='.$this->searchTaskId, TRUE);
@@ -65,7 +82,8 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
         'placeholder' => E::ts('- select -'),
       ));
       $this->add('text', 'title', E::ts('Title'), array('size' => 100, 'maxlength' => 255), TRUE);
-      $this->add('text', 'description', E::ts('Description'), array('size' => 255, 'maxlength' => 255));
+      $this->add( 'text','name', E::ts('Name'), array('size' => 100, 'maxlength' => 255), false);
+      $this->add('text', 'description', E::ts('Description'), array('size' => 100, 'maxlength' => 255));
       $this->add('text', 'success_message', E::ts('Success Message'), array('size' => 255, 'maxlength' => 255));
       $this->add('wysiwyg', 'help_text', E::ts('Help text for this search task'), array('rows' => 6, 'cols' => 80));
       $this->add('checkbox', 'is_active', E::ts('Enabled'));
@@ -124,6 +142,7 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
 
     $values = $this->exportValues();
     $params['type'] = $values['type'];
+    $params['name'] = $values['name'];
     $params['title'] = $values['title'];
     $params['description'] = $values['description'];
     $params['help_text'] = $values['help_text'];
@@ -161,6 +180,7 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
     $searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
     if (!empty($searchTask)) {
       $defaults['title'] = $searchTask['title'];
+      $defaults['name'] = $searchTask['name'];
       $defaults['type'] = $searchTask['type'];
       if (isset($searchTask['description'])) {
         $defaults['description'] = $searchTask['description'];
@@ -179,8 +199,8 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
   }
 
   protected function addFields() {
-    $provider = searchactiondesigner_get_provider();
-    $this->assign('field_types', $provider->getFieldTypes());
+    $fieldLibrary = searchactiondesigner_get_form_field_library();
+    $this->assign('field_types', $fieldLibrary->getFieldTypes());
     $fields = civicrm_api3('SearchTaskField', 'get', array('search_task_id' => $this->searchTaskId, 'options' => array('limit' => 0)));
     CRM_Utils_Weight::addOrder($fields['values'], 'CRM_Searchactiondesigner_DAO_SearchTaskField', 'id', $this->currentUrl, 'search_task_id='.$this->searchTaskId);
     $this->assign('fields', $fields['values']);

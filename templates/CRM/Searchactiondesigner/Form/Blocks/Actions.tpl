@@ -20,7 +20,7 @@
                         <span class="description">{$action.name}</span>
                     </td>
                     <td>{$action_types.$action_type}</td>
-                    <td>{$action.weight}</td>
+                    <td>{if (!$action.weight)}{$action.weight}{/if}</td>
                     <td>
                         <a href="{crmURL p="civicrm/searchactiondesigner/action" q="reset=1&action=update&search_task_id=`$action.search_task_id`&id=`$action.id`"}">{ts}Edit{/ts}</a>
                         <a href="{crmURL p="civicrm/searchactiondesigner/action" q="reset=1&action=delete&search_task_id=`$action.search_task_id`&id=`$action.id`"}">{ts}Remove{/ts}</a>

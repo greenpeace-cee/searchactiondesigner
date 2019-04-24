@@ -27,5 +27,6 @@
   </civix>
   <requires>
     <ext>action-provider</ext>
+    <ext>formfieldlibrary</ext>
   </requires>
 </extension>

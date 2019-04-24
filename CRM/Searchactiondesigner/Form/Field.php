@@ -25,7 +25,7 @@ class CRM_Searchactiondesigner_Form_Field extends CRM_Core_Form {
   public function preProcess() {
     parent::preProcess();
 
-    $provider = searchactiondesigner_get_provider();
+    $fieldLibrary = searchactiondesigner_get_form_field_library();
 
     $this->snippet = CRM_Utils_Request::retrieve('snippet', 'String');
     if ($this->snippet) {
@@ -40,13 +40,13 @@ class CRM_Searchactiondesigner_Form_Field extends CRM_Core_Form {
     if ($this->fieldId) {
       $this->field = civicrm_api3('SearchTaskField', 'getsingle', array('id' => $this->fieldId));
       $this->assign('field', $this->field);
-      $this->fieldTypeClass = $provider->getFieldTypeByName($this->field['type']);
+      $this->fieldTypeClass = $fieldLibrary->getFieldTypeByName($this->field['type']);
       $this->assign('has_configuration', $this->fieldTypeClass->hasConfiguration());
     }
 
     $type = CRM_Utils_Request::retrieve('type', 'String');
     if ($type) {
-      $this->fieldTypeClass = $provider->getFieldTypeByName($type);
+      $this->fieldTypeClass = $fieldLibrary->getFieldTypeByName($type);
       $this->assign('has_configuration', $this->fieldTypeClass->hasConfiguration());
     }
   }
@@ -65,8 +65,8 @@ class CRM_Searchactiondesigner_Form_Field extends CRM_Core_Form {
     if (!$this->snippet) {
       $this->add('hidden', 'search_task_id');
       $this->add('hidden', 'id');
-      $provider = searchactiondesigner_get_provider();
-      $this->add('select', 'type', E::ts('Type'), $provider->getFieldTypes(), true, array(
+      $fieldLibrary = searchactiondesigner_get_form_field_library();
+      $this->add('select', 'type', E::ts('Type'), $fieldLibrary->getFieldTypes(), true, array(
         'style' => 'min-width:250px',
         'class' => 'crm-select2 huge',
         'placeholder' => E::ts('- select -'),
@@ -103,6 +103,16 @@ class CRM_Searchactiondesigner_Form_Field extends CRM_Core_Form {
       }
     }
     return $defaults;
+  }
+
+  /**
+   * Function that can be defined in Form to override or.
+   * perform specific action on cancel action
+   */
+  public function cancelAction() {
+    $this->searchTaskId = CRM_Utils_Request::retrieve('search_task_id', 'Integer');
+    $redirectUrl = CRM_Utils_System::url('civicrm/searchactiondesigner/edit', array('reset' => 1, 'action' => 'update', 'id' => $this->searchTaskId));
+    CRM_Utils_System::redirect($redirectUrl);
   }
 
   public function postProcess() {

@@ -25,6 +25,13 @@
     <length>255</length>
   </field>
   <field>
+    <name>name</name>
+    <title>Name</title>
+    <type>varchar</type>
+    <required>false</required>
+    <length>255</length>
+  </field>
+  <field>
     <name>description</name>
     <title>Description</title>
     <type>text</type>

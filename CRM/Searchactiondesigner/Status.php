@@ -8,6 +8,7 @@ use CRM_Searchactiondesigner_ExtensionUtil as E;
 
 class CRM_Searchactiondesigner_Status {
 
+  const UNKNOWN = -1;
   const IN_DATABASE = 0;
   const IN_CODE = 1;
   const OVERRIDDEN = 2;

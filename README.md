@@ -12,7 +12,8 @@ The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
 * PHP v5.6+
 * CiviCRM (5.0 or newer)
-* [Action Provider](http://lab.civicrm.org/extensions/action-provider) (version 1.2 or newer)
+* [Form Field Library](http://lab.civicrm.org/extensions/formfieldlibrary)
+* [Action Provider](http://lab.civicrm.org/extensions/action-provider) (version 1.3 or newer)
 
 ## Installation (Web UI)
 
@@ -42,11 +43,12 @@ cv en searchactiondesigner
 
 After you have installed this extension you can design your search action under Administer --> Customize Data and Screens --> Search Action Designer.
 
+## Documenation
+
+* Creating a search action (to be written)
+* Exporting and importing a search action (to be written)
+
 ## Developer documentation
 
 * [Hook documentation](docs/hooks.md)
-* [How to add your own field](docs/add_your_own_field_type.md)
-
-## Known Issues
-
-(* FIXME *)
+* Storing search action in code your extension (to be written)

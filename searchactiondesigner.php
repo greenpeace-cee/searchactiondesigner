@@ -6,10 +6,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * @return \Civi\Searchactiondesigner\Provider
+ * @return \Civi\FormFieldLibrary\Library
  */
-function searchactiondesigner_get_provider() {
-  return \Civi::service('searchactiondesigner_provider');
+function searchactiondesigner_get_form_field_library() {
+  return \Civi::service('formfieldlibrary');
 }
 
 /**
@@ -73,7 +73,7 @@ function searchactiondesigner_civicrm_navigationMenu(&$menu) {
  */
 function searchactiondesigner_civicrm_container(ContainerBuilder $container) {
   // Register the TypeFactory
-  $container->setDefinition('searchactiondesigner_provider', new Definition('Civi\Searchactiondesigner\Provider'));
+  $container->setDefinition('searchactiondesigner_provider', new Definition('Civi\Searchactiondesigner\Library'));
 }
 
 /**

@@ -17,12 +17,16 @@ class CRM_Searchactiondesigner_Mapping {
    */
   public static function getFieldsForMapping($search_task_id, $id=null) {
     $actionProvider = searchactiondesigner_get_action_provider();
+    $fieldLibrary = searchactiondesigner_get_form_field_library();
     $return = array();
     $searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $search_task_id));
     $return['id'] = CRM_Searchactiondesigner_Type::getIdFieldTitle($searchTask['type']);
     $searchTaskFields = civicrm_api3('SearchTaskField', 'get', array('search_task_id' => $search_task_id, 'options' => array('limit' => 0)));
     foreach($searchTaskFields['values'] as $searchTaskField) {
-      $return['input.'.$searchTaskField['name']] = E::ts('User input').' :: '.$searchTaskField['title'];
+      $field = $fieldLibrary->getFieldTypeByName($searchTaskField['type']);
+      foreach($field->getOutputNames() as $outputName => $outputLabel) {
+        $return['input.' . $searchTaskField['name'].'.'.$outputName] = E::ts('User input') . ' :: ' . $searchTaskField['title'] . ' :: '.$outputLabel;
+      }
     }
     $searchTaskActions = civicrm_api3('SearchTaskAction', 'get', array('search_task_id' => $search_task_id, 'options' => array('limit' => 0)));
     foreach($searchTaskActions['values'] as $searchTaskAction) {

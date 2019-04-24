@@ -6,13 +6,12 @@
 
 use CRM_Searchactiondesigner_ExtensionUtil as E;
 
-class CRM_Searchactiondesigner_Form_Task_Task extends CRM_Core_Form_Task {
+class CRM_Searchactiondesigner_Form_Task_Contact extends CRM_Contact_Form_Task {
 
   protected $searchTaskId;
   protected $searchTask;
 
   public function preProcess() {
-    self::$entityShortname = 'Searchactiondesigner_Form_Task';
     parent::preProcess();
 
     if (strpos($this->_task,'searchactiondesigner_') !== 0) {
@@ -31,7 +30,7 @@ class CRM_Searchactiondesigner_Form_Task_Task extends CRM_Core_Form_Task {
 
   public function postProcess() {
     $submittedValues = $this->controller->exportValues();
-    CRM_Searchactiondesigner_Form_Task_Helper::postProcess($this->searchTaskId, $submittedValues, $this->_entityIds);
+    CRM_Searchactiondesigner_Form_Task_Helper::postProcess($this->searchTaskId, $submittedValues, $this->_contactIds);
   }
 
 

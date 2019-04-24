@@ -48,12 +48,17 @@ class CRM_Searchactiondesigner_Upgrader extends CRM_Searchactiondesigner_Upgrade
    *         empty array when all dependencies are met.
    */
   public static function checkExtensionDependencies() {
-    $unmet = array('action-provider');
+    $unmet = array('action-provider', 'formfieldlibrary');
     $extensions = civicrm_api3('Extension', 'get', array('options' => array('limit' => 0)));
     foreach($extensions['values'] as $ext) {
       if ($ext['key'] == 'action-provider' && $ext['status'] == 'installed') {
-        if (version_compare($ext['version'], '1.2', '>=')) {
+        if (version_compare($ext['version'], '1.3', '>=')) {
           unset($unmet[array_search('action-provider', $unmet)]);
+        }
+      }
+      if ($ext['key'] == 'formfieldlibrary' && $ext['status'] == 'installed') {
+        if (version_compare($ext['version'], '1.0', '>=')) {
+          unset($unmet[array_search('formfieldlibrary', $unmet)]);
         }
       }
     }
