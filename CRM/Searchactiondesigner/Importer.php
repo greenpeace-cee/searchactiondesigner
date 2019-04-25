@@ -133,14 +133,14 @@ class CRM_Searchactiondesigner_Importer {
         continue;
       }
 
-      $path = $ext['path'].'/search-tasks';
+      $path = $ext['path'].'/searchactions';
       if (!is_dir($path)) {
         continue;
       }
 
       foreach (glob($path."/*.json") as $file) {
         $return[] = array(
-          'file' => $ext['key']. '/search-tasks/'.basename($file),
+          'file' => $ext['key']. '/searchactions/'.basename($file),
           'data' => file_get_contents($file),
         );
       }

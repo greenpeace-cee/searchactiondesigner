@@ -17,7 +17,7 @@ class CRM_Searchactiondesigner_Form_Task_Activity extends CRM_Activity_Form_Task
     if (strpos($this->_task,'searchactiondesigner_') !== 0) {
       throw new \Exception(E::ts('Invalid search task'));
     }
-    $this->searchTaskId = substr($this->_task, 18);
+    $this->searchTaskId = substr($this->_task, 21);
 
     $this->searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
     $this->assign('searchTask', $this->searchTask);

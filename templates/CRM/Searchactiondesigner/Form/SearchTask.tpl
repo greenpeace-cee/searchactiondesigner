@@ -7,7 +7,7 @@
   {* Are you sure to delete form *}
   <h3>{ts}Delete Search Task{/ts}</h3>
   <div class="crm-block crm-form-block crm-search-task_label-block">
-    <div class="crm-section">{ts 1=$rule->label}Are you sure to delete search task: '%1'?{/ts}</div>
+    <div class="crm-section">{ts 1=$rule->label}Are you sure to delete search action: '%1'?{/ts}</div>
   </div>
 {elseif $action eq 128}
   {* Export form *}
@@ -19,7 +19,7 @@
   </div>
 {else}
 
-  <h3>Search Task Builder</h3>
+  <h3>Search Action Designer</h3>
   <div class="crm-block crm-form-block crm-search-task_title-block">
     <div class="crm-section">
       <div class="label">{$form.type.label}</div>

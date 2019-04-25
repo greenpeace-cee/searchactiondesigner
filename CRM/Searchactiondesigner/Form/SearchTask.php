@@ -81,10 +81,10 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
         'class' => 'crm-select2 huge',
         'placeholder' => E::ts('- select -'),
       ));
-      $this->add('text', 'title', E::ts('Title'), array('size' => 100, 'maxlength' => 255), TRUE);
-      $this->add( 'text','name', E::ts('Name'), array('size' => 100, 'maxlength' => 255), false);
+      $this->add('text', 'title', E::ts('Title'), array('size' => 50, 'maxlength' => 255), TRUE);
+      $this->add( 'text','name', E::ts('Name'), array('size' => 50, 'maxlength' => 255), false);
       $this->add('text', 'description', E::ts('Description'), array('size' => 100, 'maxlength' => 255));
-      $this->add('text', 'success_message', E::ts('Success Message'), array('size' => 255, 'maxlength' => 255));
+      $this->add('text', 'success_message', E::ts('Success Message'), array('size' => 100, 'maxlength' => 255));
       $this->add('wysiwyg', 'help_text', E::ts('Help text for this search task'), array('rows' => 6, 'cols' => 80));
       $this->add('checkbox', 'is_active', E::ts('Enabled'));
       $this->add('text', 'records_per_batch', E::ts('Records per batch'), array('size' => 4, 'maxlength' => 4), TRUE);

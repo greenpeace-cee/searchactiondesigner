@@ -3,7 +3,7 @@
   <item>
     <path>civicrm/searchactiondesigner/manage</path>
     <page_callback>CRM_Searchactiondesigner_Form_ManageSearchTasks</page_callback>
-    <title>Manage Search Task</title>
+    <title>Manage Search Actions</title>
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>

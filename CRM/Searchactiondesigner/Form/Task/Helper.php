@@ -107,7 +107,7 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
       $runner = new CRM_Queue_Runner(array(
         'title' => $search_task['title'],
         'queue' => $queue, //the queue object
-        'errorMode'=> CRM_Queue_Runner::ERROR_CONTINUE, //abort upon error and keep task in queue
+        'errorMode'=> CRM_Queue_Runner::ERROR_ABORT, //abort upon error and keep task in queue
         'onEnd' => array('postProcess', 'onEnd'), //method which is called as soon as the queue is finished
         'onEndUrl' => $url,
       ));
