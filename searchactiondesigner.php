@@ -104,9 +104,33 @@ function searchactiondesigner_civicrm_managed(&$entities) {
   $unmet = CRM_Searchactiondesigner_Upgrader::checkExtensionDependencies();
   CRM_Searchactiondesigner_Upgrader::displayDependencyErrors($unmet);
   if (!count($unmet)) {
-    CRM_Searchactiondesigner_Importer::importFromExtensions();
+    $imported = CRM_Searchactiondesigner_Importer::importFromExtensions();
+    $importedTitles = array();
+    foreach($imported as $import) {
+      $importedTitles[] = $import['title'];
+    }
+    if (count($importedTitles)) {
+      CRM_Core_Session::setStatus(E::ts("Search actions imported: <br>-&nbsp;%1", array(1=>implode("<br>-&nbsp;", $importedTitles))), E::ts("Imported Search Actions"), 'success' );
+    }
   }
   _searchactiondesigner_civix_civicrm_managed($entities);
+}
+
+/**
+ * Implements hook_civicrm_xmlMenu().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
+ */
+function searchactiondesigner_civicrm_xmlMenu(&$files) {
+  $imported = CRM_Searchactiondesigner_Importer::importFromExtensions();
+  $importedTitles = array();
+  foreach($imported as $import) {
+    $importedTitles[] = $import['title'];
+  }
+  if (count($importedTitles)) {
+    CRM_Core_Session::setStatus(E::ts("Search actions imported: <br>-&nbsp;%1", array(1=>implode("<br>-&nbsp;", $importedTitles))), E::ts("Imported Search Actions"), 'success' );
+  }
+  _searchactiondesigner_civix_civicrm_xmlMenu($files);
 }
 
 /**
@@ -116,15 +140,6 @@ function searchactiondesigner_civicrm_managed(&$entities) {
  */
 function searchactiondesigner_civicrm_config(&$config) {
   _searchactiondesigner_civix_civicrm_config($config);
-}
-
-/**
- * Implements hook_civicrm_xmlMenu().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
- */
-function searchactiondesigner_civicrm_xmlMenu(&$files) {
-  _searchactiondesigner_civix_civicrm_xmlMenu($files);
 }
 
 /**

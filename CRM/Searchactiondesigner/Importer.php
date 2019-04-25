@@ -59,6 +59,7 @@ class CRM_Searchactiondesigner_Importer {
       'original_status' => $status,
       'new_status' => $new_status,
       'file' => $filename,
+      'title' => $data['title'],
     );
 
     return $return;
