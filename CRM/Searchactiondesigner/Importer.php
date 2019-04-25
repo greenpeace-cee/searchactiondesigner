@@ -15,7 +15,7 @@ class CRM_Searchactiondesigner_Importer {
    * @return array
    * @throws \Exception
    */
-  public static function import($data, $filename) {
+  public static function import($data, $filename, $overWriteInDatabase=false) {
     $search_task_id = CRM_Searchactiondesigner_BAO_SearchTask::getId($data['name']);
     $status = CRM_Searchactiondesigner_BAO_SearchTask::getStatus($data['name']);
     $new_status = null;
@@ -24,17 +24,32 @@ class CRM_Searchactiondesigner_Importer {
     switch ($status) {
       case CRM_Searchactiondesigner_Status::IN_DATABASE:
         // Update to overriden
-        CRM_Searchactiondesigner_BAO_SearchTask::setStatusAndSourceFile($data['name'], CRM_Searchactiondesigner_Status::OVERRIDDEN, $filename);
-        $new_id = $search_task_id;
-        $new_status = CRM_Searchactiondesigner_Status::OVERRIDDEN;
+        if (!$overWriteInDatabase) {
+          CRM_Searchactiondesigner_BAO_SearchTask::setStatusAndSourceFile($data['name'], CRM_Searchactiondesigner_Status::OVERRIDDEN, $filename);
+          $new_id = $search_task_id;
+          $new_status = CRM_Searchactiondesigner_Status::OVERRIDDEN;
+        } else {
+          $new_id = self::importSearchTask($data, $filename, $search_task_id);
+          $new_status = CRM_Searchactiondesigner_Status::IN_DATABASE;
+        }
         break;
       case CRM_Searchactiondesigner_Status::OVERRIDDEN:
-        $new_id = $search_task_id;
-        $new_status = CRM_Searchactiondesigner_Status::OVERRIDDEN;
+        if (!$overWriteInDatabase) {
+          $new_id = $search_task_id;
+          $new_status = CRM_Searchactiondesigner_Status::OVERRIDDEN;
+        } else {
+          $new_id = self::importSearchTask($data, $filename, $search_task_id);
+          $new_status = CRM_Searchactiondesigner_Status::OVERRIDDEN;
+        }
         break;
       default:
-        $new_id = self::importSearchTask($data, $filename, $search_task_id);
-        $new_status = CRM_Searchactiondesigner_Status::IN_CODE;
+        if (!$overWriteInDatabase) {
+          $new_id = self::importSearchTask($data, $filename, $search_task_id);
+          $new_status = CRM_Searchactiondesigner_Status::IN_CODE;
+        } else {
+          $new_id = self::importSearchTask($data, $filename, $search_task_id);
+          $new_status = CRM_Searchactiondesigner_Status::OVERRIDDEN;
+        }
         break;
     }
 
@@ -60,6 +75,7 @@ class CRM_Searchactiondesigner_Importer {
    * @throws \Exception
    */
   public static function importSearchTask($data, $filename, $search_task_id) {
+    $fieldLibrary = searchactiondesigner_get_form_field_library();
     $params = $data;
     unset($params['fields']);
     unset($params['actions']);
@@ -78,12 +94,14 @@ class CRM_Searchactiondesigner_Importer {
     }
     $actions = civicrm_api3('SearchTaskAction', 'get', array('search_task_id' => $id, 'options' => array('limit' => 0)));
     foreach($actions['values'] as $action) {
-      civicrm_api3('SearchTaskAction', 'delete', array('id' => $field['id']));
+      civicrm_api3('SearchTaskAction', 'delete', array('id' => $action['id']));
     }
 
     foreach($data['fields'] as $field) {
       $params = $field;
       $params['search_task_id'] = $id;
+      $fieldClass = $fieldLibrary->getFieldTypeByName($field['type']);
+      $params['configuration'] = $fieldClass->importConfiguration($field['configuration']);
       civicrm_api3('SearchTaskField', 'create', $params);
     }
     foreach($data['actions'] as $action) {
@@ -109,6 +127,9 @@ class CRM_Searchactiondesigner_Importer {
       $data = json_decode($ext_file['data'], true);
       $return[$ext_file['file']] = self::import($data, $ext_file['file']);
       $importedIds[] = $return[$ext_file['file']]['new_id'];
+    }
+    if (!count($importedIds)) {
+      return $return;
     }
 
     // Remove all search tasks which are in code or overridden but not imported

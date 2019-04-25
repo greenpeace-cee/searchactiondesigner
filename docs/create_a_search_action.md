@@ -17,10 +17,10 @@ What we want to create is an action which creates the pdf for us and sets the ac
 
 ## Create the search action
 
-Go to *Administer* then *Customize data and screens* and then *Search Action Designer* and press *Add search task*
+Go to *Administer* then *Customize data and screens* and then *Search Action Designer* and press *Add search action*
 
-In the next screen select that this search task is available for an activity search.
-Give your search task a title. Such as 'Send renewal'. 
+In the next screen select that this search action is available for an activity search.
+Give your search action a title. Such as 'Send renewal'. 
 Optional give it a description. The description is only shown in the administration screen of the search action designer. 
 Then enter a short help text, this help text is shown to the user just before executing the search action.
 At the last step change the message which is shown to the user after the action has been executed.

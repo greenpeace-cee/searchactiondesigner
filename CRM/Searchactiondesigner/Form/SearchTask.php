@@ -41,6 +41,7 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
         CRM_Utils_System::redirect($session->readUserContext());
         break;
       case CRM_Core_Action::EXPORT:
+        $fieldLibrary = searchactiondesigner_get_form_field_library();
         $export = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
         $fields = civicrm_api3('SearchTaskField', 'get', array('search_task_id' => $this->searchTaskId, 'options' => array('limit' => 0)));
         $actions = civicrm_api3('SearchTaskAction', 'get', array('search_task_id' => $this->searchTaskId, 'options' => array('limit' => 0)));
@@ -52,12 +53,14 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
         foreach($fields['values'] as $field) {
           unset($field['id']);
           unset($field['search_task_id']);
+          $fieldClass = $fieldLibrary->getFieldTypeByName($field['type']);
+          $field['configuration'] = $fieldClass->exportConfiguration($field['configuration']);
           $export['fields'][] = $field;
         }
         foreach($actions['values'] as $action) {
           unset($action['id']);
           unset($action['search_task_id']);
-          $export['fields'][] = $action;
+          $export['actions'][] = $action;
         }
         $this->assign('export', json_encode($export, JSON_PRETTY_PRINT));
         break;

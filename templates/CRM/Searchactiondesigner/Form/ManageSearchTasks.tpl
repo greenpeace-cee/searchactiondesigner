@@ -4,7 +4,7 @@
 
     <div class="crm-block crm-form-block crm-basic-criteria-form-block">
       <div class="crm-accordion-wrapper crm-search-task-builder_search-accordion collapsed">
-        <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Search Tasks{/ts}</div><!-- /.crm-accordion-header -->
+        <div class="crm-accordion-header crm-master-accordion-header">{ts}Filter Search Actions{/ts}</div><!-- /.crm-accordion-header -->
         <div class="crm-accordion-body">
           <table class="form-layout">
             <tbody>
@@ -45,11 +45,11 @@
     <div class="action-link">
       <a class="button" href="{crmURL p="civicrm/searchactiondesigner/edit" q="reset=1&action=add" }">
         <i class="crm-i fa-plus-circle">&nbsp;</i>
-        {ts}Add Search Task{/ts}
+        {ts}Add Search Action{/ts}
       </a>
       <a class="button" href="{crmURL p="civicrm/searchactiondesigner/import" q="reset=1&action=add" }">
         <i class="crm-i fa-upload">&nbsp;</i>
-        {ts}Import Search Task{/ts}
+        {ts}Import Search Action{/ts}
       </a>
     </div>
 
@@ -62,7 +62,7 @@
         <table class="selector row-highlight">
           <thead class="sticky">
           <tr>
-            <th scope="col" >{ts}Search Task{/ts}</th>
+            <th scope="col" >{ts}Title{/ts}</th>
             <th scope="col" >{ts}Description{/ts}</th>
             <th scope="col" >{ts}Available for{/ts}</th>
             <th scope="col" >{ts}Is active{/ts}</th>

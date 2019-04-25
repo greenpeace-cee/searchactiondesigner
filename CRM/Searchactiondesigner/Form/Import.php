@@ -29,11 +29,13 @@ class CRM_Searchactiondesigner_Form_Import extends CRM_Core_Form {
   public function postProcess() {
     $values = $this->exportValues();
     $importCode = json_decode($values['code'], true);
-    $importResult = CRM_Searchactiondesigner_Importer::import($importCode, '');
+    $importResult = CRM_Searchactiondesigner_Importer::import($importCode, '', true);
 
     CRM_Core_Session::setStatus(E::ts('Imported search task'), '', 'success');
 
-    $redirectUrl = CRM_Utils_System::url('civicrm/searchactiondesigner/edit', array('reset' => 1, 'action' => 'update', 'id' => $importResult['new_id']));
+    //$redirectUrl = CRM_Utils_System::url('civicrm/searchactiondesigner/edit', array('reset' => 1, 'action' => 'update', 'id' => $importResult['new_id']));
+    $session = CRM_Core_Session::singleton();
+    $redirectUrl = $session->popUserContext();
     CRM_Utils_System::redirect($redirectUrl);
   }
 

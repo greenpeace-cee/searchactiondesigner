@@ -93,6 +93,23 @@ function _searchactiondesigner_prereqCheck() {
 }
 
 /**
+ * Implements hook_civicrm_managed().
+ *
+ * Generate a list of entities to create/deactivate/delete when this module
+ * is installed, disabled, uninstalled.
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
+ */
+function searchactiondesigner_civicrm_managed(&$entities) {
+  $unmet = CRM_Searchactiondesigner_Upgrader::checkExtensionDependencies();
+  CRM_Searchactiondesigner_Upgrader::displayDependencyErrors($unmet);
+  if (!count($unmet)) {
+    CRM_Searchactiondesigner_Importer::importFromExtensions();
+  }
+  _searchactiondesigner_civix_civicrm_managed($entities);
+}
+
+/**
  * Implements hook_civicrm_config().
  *
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_config
@@ -162,18 +179,6 @@ function searchactiondesigner_civicrm_disable() {
  */
 function searchactiondesigner_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
   return _searchactiondesigner_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
- * Implements hook_civicrm_managed().
- *
- * Generate a list of entities to create/deactivate/delete when this module
- * is installed, disabled, uninstalled.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
- */
-function searchactiondesigner_civicrm_managed(&$entities) {
-  _searchactiondesigner_civix_civicrm_managed($entities);
 }
 
 /**

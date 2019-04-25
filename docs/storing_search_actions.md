@@ -6,6 +6,7 @@ In your extension create a directory called `searchactions` and create a file fo
 
 The contents of the file could be copied from the export search action screen.
 
-Importing or updating existing search action could then be done via Go to *Administer* then *System setting* and then *Scheduled Jobs* and select Import Search Tasks and press Execute now
+Importing or updating existing search action is done by a cache clear. Go to *Administer/System Settings/Cleanup Caches and update Paths* press *Cleanup Caches*.
+There is also an API for importing search actions from code. The api is called *SearchTask.Import*.
 
-![import](images/searchactionimport.png) 
+**Remark** changes in code are picked up after a cache clear. 

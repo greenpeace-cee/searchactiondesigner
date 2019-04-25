@@ -14,7 +14,7 @@ class CRM_Searchactiondesigner_Form_ManageSearchTasks extends CRM_Core_Form {
 
     $formValues = $this->getSubmitValues();
 
-    $this->setTitle(E::ts('Manage Search Tasks'));
+    $this->setTitle(E::ts('Manage Search Actions'));
 
     $whereClauses = array("1");
     if (isset($formValues['title']) && !empty($formValues['title'])) {

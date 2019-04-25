@@ -12,7 +12,7 @@ You will then see a screen like below. You can then select all the text in the b
 
 ## Import
 
-Go to *Administer* then *Customize data and screens* and then *Search Action Designer* and press **Import Search Task**
+Go to *Administer* then *Customize data and screens* and then *Search Action Designer* and press **Import Search Action**
 In the next screen *paste* the copied text from the export and press **Import**.
 
 ![Import screenshot 1](images/import1.png)
