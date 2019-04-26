@@ -21,6 +21,7 @@ class CRM_Searchactiondesigner_Form_Task_Contribution extends CRM_Contribute_For
 
     $this->searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
     $this->assign('searchTask', $this->searchTask);
+    $this->assign('status', E::ts("Number of selected contributions: %1", array(1=>count($this->_contributionIds))));
   }
 
   public function buildQuickForm() {

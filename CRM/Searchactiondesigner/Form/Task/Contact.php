@@ -21,6 +21,7 @@ class CRM_Searchactiondesigner_Form_Task_Contact extends CRM_Contact_Form_Task {
 
     $this->searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
     $this->assign('searchTask', $this->searchTask);
+    $this->assign('status', E::ts("Selected contacts: %1", array(1=>count($this->_contactIds))));
   }
 
   public function buildQuickForm() {

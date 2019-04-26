@@ -12,7 +12,10 @@ class CRM_Searchactiondesigner_Form_Task_Activity extends CRM_Activity_Form_Task
   protected $searchTask;
 
   public function preProcess() {
+    $session = CRM_Core_Session::singleton();
+    $userContext = str_replace("force=1", "", $session->readUserContext());
     parent::preProcess();
+    $session->replaceUserContext($userContext);
 
     if (strpos($this->_task,'searchactiondesigner_') !== 0) {
       throw new \Exception(E::ts('Invalid search task'));
@@ -21,6 +24,7 @@ class CRM_Searchactiondesigner_Form_Task_Activity extends CRM_Activity_Form_Task
 
     $this->searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
     $this->assign('searchTask', $this->searchTask);
+    $this->assign('status', E::ts("Number of selected activities: %1", array(1=>count($this->_activityHolderIds))));
   }
 
   public function buildQuickForm() {
