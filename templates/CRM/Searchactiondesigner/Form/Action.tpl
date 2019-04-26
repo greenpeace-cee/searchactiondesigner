@@ -19,6 +19,17 @@
       <div class="content">{$form.type.html}</div>
       <div class="clear"></div>
     </div>
+    {if ($actionClass->getHelpText())}
+      <div class="crm-section">
+        <div class="label">&nbsp;</div>
+        <div class="content">
+          <div class="help">
+            {$actionClass->getHelpText()}
+          </div>
+        </div>
+        <div class="clear"></div>
+      </div>
+    {/if}
     <div class="crm-section">
       <div class="label">{$form.title.label}</div>
       <div class="content">

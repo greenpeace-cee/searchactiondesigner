@@ -62,6 +62,7 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
       $this->actionType = $type;
       $this->actionClass = $provider->getActionByName($type);
     }
+    $this->assign('actionClass', $this->actionClass);
   }
 
   public function buildQuickForm() {

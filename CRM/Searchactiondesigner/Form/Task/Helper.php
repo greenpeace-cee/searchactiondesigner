@@ -84,10 +84,13 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
 
       $total = count($ids);
       $batches =  array_chunk($ids, $search_task['records_per_batch']);
-      $i = 0;
+      $current = 0;
       foreach($batches as $batch) {
-        $i = $i + $search_task['records_per_batch'];
-        $title = $search_task['title'] . ' ' . $i .'/'.$total;
+        $current = $current + $search_task['records_per_batch'];
+        if ($current > $total) {
+          $current = $total;
+        }
+        $title = $search_task['title'] . ' ' . $current .'/'.$total;
         //create a task without parameters
         $task = new CRM_Queue_Task(
           array(
@@ -99,8 +102,20 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
         );
         //now add this task to the queue
         $queue->createItem($task);
-
       }
+
+      $title = E::ts('Finishing task %1', array(1=>$search_task['title']));
+      //create a task without parameters
+      $task = new CRM_Queue_Task(
+        array(
+          'CRM_Searchactiondesigner_Form_Task_Helper',
+          'finishBatch'
+        ), //call back method
+        array($search_task_id), //parameters,
+        $title
+      );
+      //now add this task to the queue
+      $queue->createItem($task);
 
       $url = str_replace("&amp;", "&", $session->readUserContext());
 
@@ -130,15 +145,34 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
   public static function processBatch(CRM_Queue_TaskContext $ctx, $search_task_id, $inputMapping, $batch) {
     $actionProvider = searchactiondesigner_get_action_provider();
     self::processItems($batch, $inputMapping, $search_task_id, $ctx->queue->getName());
-    if ($ctx->queue->numberOfItems() > 1) {
-      $actionProvider->finishBatch($ctx->queue->getName(), false);
-    } else {
-      $actionProvider->finishBatch($ctx->queue->getName(), true);
-      $search_task = civicrm_api3('SearchTask', 'getsingle', array('id' => $search_task_id));
-      if (isset($search_task['success_message']) && !empty($search_task['success_message'])) {
-        CRM_Core_Session::setStatus($search_task['success_message'], $search_task['title'], 'success');
-      }
+    $actionProvider->finishBatch($ctx->queue->getName(), false);
+    return TRUE;
+  }
+
+  /**
+   * Finish the batch
+   *
+   * @param $ctx
+   * @param $search_task_id
+   *
+   * @return bool
+   * @throws \CiviCRM_API3_Exception
+   */
+  public static function finishBatch(CRM_Queue_TaskContext $ctx, $search_task_id) {
+    $actionProvider = searchactiondesigner_get_action_provider();
+    $batchName = $ctx->queue->getName();
+
+    $search_task = civicrm_api3('SearchTask', 'getsingle', array('id' => $search_task_id));
+    if (isset($search_task['success_message']) && !empty($search_task['success_message'])) {
+      CRM_Core_Session::setStatus($search_task['success_message'], $search_task['title'], 'success');
     }
+
+    // Find all actions and initialize the class
+    $actions = self::getActions($search_task_id);
+    foreach($actions as $action) {
+      $actionClass = $actionProvider->getBatchActionByName($action['type'], $action['configuration'], $batchName);
+    }
+    $actionProvider->finishBatch($batchName, true);
     return TRUE;
   }
 
