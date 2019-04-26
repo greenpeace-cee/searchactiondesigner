@@ -69,8 +69,14 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
 
     if (count($ids) <= $search_task['records_per_batch']) {
       // Process directly
+      // Set time limit to 0 as this script may run for quite a while. Depending on the
+      // actions.
+      set_time_limit(0);
       $actionProvider = searchactiondesigner_get_action_provider();
       self::processItems($ids, $inputMapping, $search_task_id, $name);
+      if (isset($search_task['success_message']) && !empty($search_task['success_message'])) {
+        CRM_Core_Session::setStatus($search_task['success_message'], $search_task['title'], 'success');
+      }
       $actionProvider->finishBatch($name, true);
     } else {
       // Create a batch
@@ -143,6 +149,9 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
    * @throws \CiviCRM_API3_Exception
    */
   public static function processBatch(CRM_Queue_TaskContext $ctx, $search_task_id, $inputMapping, $batch) {
+    // Set time limit to 0 as this script may run for quite a while. Depending on the
+    // actions.
+    set_time_limit(0);
     $actionProvider = searchactiondesigner_get_action_provider();
     self::processItems($batch, $inputMapping, $search_task_id, $ctx->queue->getName());
     $actionProvider->finishBatch($ctx->queue->getName(), false);
@@ -159,19 +168,26 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
    * @throws \CiviCRM_API3_Exception
    */
   public static function finishBatch(CRM_Queue_TaskContext $ctx, $search_task_id) {
+    // Set time limit to 0 as this script may run for quite a while. Depending on the
+    // actions.
+    set_time_limit(0);
+    // Retrieve the action provider
     $actionProvider = searchactiondesigner_get_action_provider();
     $batchName = $ctx->queue->getName();
 
+    // Set a finish status message.
     $search_task = civicrm_api3('SearchTask', 'getsingle', array('id' => $search_task_id));
     if (isset($search_task['success_message']) && !empty($search_task['success_message'])) {
       CRM_Core_Session::setStatus($search_task['success_message'], $search_task['title'], 'success');
     }
 
     // Find all actions and initialize the class
+    // We do this so the actions are initialized and able to finish.
     $actions = self::getActions($search_task_id);
     foreach($actions as $action) {
       $actionClass = $actionProvider->getBatchActionByName($action['type'], $action['configuration'], $batchName);
     }
+    // Finish the batch.
     $actionProvider->finishBatch($batchName, true);
     return TRUE;
   }

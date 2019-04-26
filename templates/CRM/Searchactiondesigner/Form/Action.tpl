@@ -19,7 +19,7 @@
       <div class="content">{$form.type.html}</div>
       <div class="clear"></div>
     </div>
-    {if ($actionClass->getHelpText())}
+    {if ($actionClass && $actionClass->getHelpText())}
       <div class="crm-section">
         <div class="label">&nbsp;</div>
         <div class="content">

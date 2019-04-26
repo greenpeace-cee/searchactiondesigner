@@ -20,7 +20,7 @@ What we want to create is an action which creates the pdf for us and sets the ac
 Go to *Administer* then *Customize data and screens* and then *Search Action Designer* and press *Add search action*
 
 In the next screen select that this search action is available for an activity search.
-Give your search action a title. Such as 'Send renewal'. 
+Give your search action a title. Such as 'Create renewal letter'. 
 Optional give it a description. The description is only shown in the administration screen of the search action designer. 
 Then enter a short help text, this help text is shown to the user just before executing the search action.
 At the last step change the message which is shown to the user after the action has been executed.
@@ -97,7 +97,7 @@ Go to search and then Find Activities. Search on activities of type *Send Renewa
 
 ![screenshot 8](images/createsearchaction8.png)
 
-Select the activities which you want to process to send a reminder. And select by action our create action *Send renewal and set activity to completed*
+Select the activities which you want to process to send a reminder. And select by action our create action *Create renewal letter*
 
 ![screenshot 9](images/createsearchaction9.png)
 
@@ -111,7 +111,7 @@ If your batch is large enough a progress bar is shown in the next screen.
 ![screenshot 11](images/createsearchaction11.png)
 
 After the action is completed you are redirected to your search screen and a popup is shown. One that the action has been completed
-and one with a link to download all the genereated PDFs. 
+and one with a link to download the genereated PDF. 
 
 ![screenshot 12](images/createsearchaction12.png) ![screenshot 13](images/createsearchaction13.png)
 
