@@ -23,7 +23,7 @@
                         <span class="description">{$field.name}</span>
                     </td>
                     <td>{$field_types.$field_type}</td>
-                    <td>{if (!$field.weight)}{$field.weight}{/if}</td>
+                    <td>{if ($field.weight)}{$field.weight}{/if}</td>
                     <td>
                         <a href="{crmURL p="civicrm/searchactiondesigner/field" q="reset=1&action=update&search_task_id=`$field.search_task_id`&id=`$field.id`"}">{ts}Edit{/ts}</a>
                         <a href="{crmURL p="civicrm/searchactiondesigner/field" q="reset=1&action=delete&search_task_id=`$field.search_task_id`&id=`$field.id`"}">{ts}Remove{/ts}</a>
