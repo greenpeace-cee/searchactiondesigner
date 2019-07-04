@@ -12,7 +12,7 @@ class CRM_Searchactiondesigner_Form_Task_Task extends CRM_Core_Form_Task {
   protected $searchTask;
 
   public function preProcess() {
-    self::$entityShortname = 'Searchactiondesigner_Form_Task';
+    $this->setEntityShortName();
     parent::preProcess();
 
     if (strpos($this->_task,'searchactiondesigner_') !== 0) {
@@ -22,6 +22,10 @@ class CRM_Searchactiondesigner_Form_Task_Task extends CRM_Core_Form_Task {
 
     $this->searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
     $this->assign('searchTask', $this->searchTask);
+  }
+
+  protected function setEntityShortName() {
+    self::$entityShortname = 'Searchactiondesigner_Form_Task';
   }
 
   public function buildQuickForm() {
