@@ -33,7 +33,7 @@ class CRM_Searchactiondesigner_Type {
         ),
         'membership' => array(
           'title' => E::ts('Membership search tasks'),
-          'class' => 'CRM_Searchactiondesigner_Form_Task_Task',
+          'class' => 'CRM_Searchactiondesigner_Form_Task_Membership',
           'id_field_title' => E::ts('Membership ID'),
         ),
         'event' => array(
