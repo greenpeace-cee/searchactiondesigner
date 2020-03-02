@@ -12,7 +12,10 @@ class CRM_Searchactiondesigner_Form_Task_Membership extends CRM_Member_Form_Task
   protected $searchTask;
 
   public function preProcess() {
+    $session = CRM_Core_Session::singleton();
+    $url = $session->readUserContext();
     parent::preProcess();
+    $session->replaceUserContext($url);
 
     if (strpos($this->_task,'searchactiondesigner_') !== 0) {
       throw new \Exception(E::ts('Invalid search task'));

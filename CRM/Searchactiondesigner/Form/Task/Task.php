@@ -13,7 +13,10 @@ class CRM_Searchactiondesigner_Form_Task_Task extends CRM_Core_Form_Task {
 
   public function preProcess() {
     $this->setEntityShortName();
+    $session = CRM_Core_Session::singleton();
+    $url = $session->readUserContext();
     parent::preProcess();
+    $session->replaceUserContext($url);
 
     if (strpos($this->_task,'searchactiondesigner_') !== 0) {
       throw new \Exception(E::ts('Invalid search task'));
