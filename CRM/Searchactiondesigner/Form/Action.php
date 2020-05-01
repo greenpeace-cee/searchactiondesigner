@@ -157,13 +157,18 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
   public function addMapping() {
     $availableFields = CRM_Searchactiondesigner_Mapping::getFieldsForMapping($this->searchTaskId, $this->actionId);
     $actionProviderMappingFields = array();
+    $actionProviderMappingDescriptions = array();
     $defaults = array();
     foreach($this->actionClass->getParameterSpecification() as $spec) {
       $name = $this->actionType.'_mapping_'.$spec->getName();
+      if ($spec->getDescription()) {
+        $actionProviderMappingDescriptions[$name] = $spec->getDescription();
+      }
       $this->add('select', $name, $spec->getTitle(), $availableFields, $spec->isRequired(), array(
         'style' => 'min-width:250px',
         'class' => 'crm-select2 huge',
         'placeholder' => E::ts('- select -'),
+        'multiple' => $spec->isMultiple(),
       ));
       $actionProviderMappingFields[] = $name;
 
@@ -172,6 +177,7 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
       }
     }
     $this->assign('actionProviderMappingFields', $actionProviderMappingFields);
+    $this->assign('actionProviderMappingDescriptions', $actionProviderMappingDescriptions);
     $this->setDefaults($defaults);
   }
 

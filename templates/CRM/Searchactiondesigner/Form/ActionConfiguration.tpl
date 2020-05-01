@@ -31,8 +31,8 @@
           <div class="label">{$form.$elementName.label}</div>
           <div class="content">
             {$form.$elementName.html}
-            {if ($actionProviderElementDescriptions.$elementName)}
-              <br /><span class="description">{$actionProviderElementDescriptions.$elementName}</span>
+            {if ($actionProviderMappingDescriptions.$elementName)}
+              <br /><span class="description">{$actionProviderMappingDescriptions.$elementName}</span>
             {/if}
           </div>
           <div class="clear"></div>
