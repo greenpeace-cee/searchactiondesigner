@@ -5,14 +5,14 @@ This could be useful if you have defined your search action in your test environ
 
 ## Export
 
-Go to *Administer* then *Customize data and screens* and then *Search Action Designer* and behind a search atcion press **Export**
+Go to **Administer > Customize data and screens > Search Action Designer** then click **Export** for the Search Action you want to export.
 You will then see a screen like below. You can then select all the text in the big text area and copy the text. 
 
 ![Export screenshot 1](images/export1.png)
 
 ## Import
 
-Go to *Administer* then *Customize data and screens* and then *Search Action Designer* and press **Import Search Action**
+Go to **Administer > Customize data and screens > Search Action Designer > Import Search Action**
 In the next screen *paste* the copied text from the export and press **Import**.
 
 ![Import screenshot 1](images/import1.png)
