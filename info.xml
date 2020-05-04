@@ -30,4 +30,5 @@
     <ext>action-provider</ext>
     <ext>formfieldlibrary</ext>
   </requires>
+  <comments>Funded by CiviCooP, Velt, Barnekreftforeningen. Contibutors: Aydun</comments>
 </extension>

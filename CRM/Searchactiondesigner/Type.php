@@ -38,7 +38,7 @@ class CRM_Searchactiondesigner_Type {
         ),
         'event' => array(
           'title' => E::ts('Event Participant search tasks'),
-          'class' => 'CRM_Searchactiondesigner_Form_Task_Task',
+          'class' => 'CRM_Searchactiondesigner_Form_Task_Event',
           'id_field_title' => E::ts('Participant ID'),
         ),
         'case' => array(
