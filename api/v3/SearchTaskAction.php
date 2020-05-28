@@ -35,7 +35,9 @@ function civicrm_api3_search_task_action_create($params) {
     $id = $params['id'];
   }
   $params['name'] = CRM_Searchactiondesigner_BAO_SearchTaskAction::checkName($params['title'], $params['search_task_id'], $id, $params['name']);
-  return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  $return = _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  CRM_Searchactiondesigner_BAO_SearchTask::updateAndChekStatus($params['search_task_id']);
+  return $return;
 }
 
 /**
@@ -46,6 +48,8 @@ function civicrm_api3_search_task_action_create($params) {
  * @throws API_Exception
  */
 function civicrm_api3_search_task_action_delete($params) {
+  $data = civicrm_api3('SearchTaskAction', 'getsingle', array('id' => $params['id']));
+  CRM_Searchactiondesigner_BAO_SearchTask::updateAndChekStatus($data['search_task_id']);
   return _civicrm_api3_basic_delete(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
 

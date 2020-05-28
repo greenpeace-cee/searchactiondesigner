@@ -3,6 +3,8 @@ use CRM_Searchactiondesigner_ExtensionUtil as E;
 
 class CRM_Searchactiondesigner_BAO_SearchTask extends CRM_Searchactiondesigner_DAO_SearchTask {
 
+  protected static $importingSearchTasks = [];
+
   /**
    * Create and check whether a name already exists.
    *
@@ -87,6 +89,35 @@ class CRM_Searchactiondesigner_BAO_SearchTask extends CRM_Searchactiondesigner_D
     $params[2] = array($status, 'Integer');
     $params[3] = array($source_file, 'String');
     CRM_Core_DAO::executeQuery($sql, $params);
+  }
+
+  /**
+   * Update the status from in code to overriden when a data processor has been changed
+   *
+   * @param $searchTaskId
+   */
+  public static function updateAndChekStatus($searchTaskId) {
+    $sql = "SELECT `status`, `name` FROM `civicrm_search_task` WHERE `id` = %1";
+    $params[1] = array($searchTaskId, 'Integer');
+    $dao = CRM_Core_DAO::executeQuery($sql, $params);
+    if ($dao->fetch()) {
+      if (!in_array($dao->name, self::$importingSearchTasks) && $dao->status == CRM_Searchactiondesigner_Status::IN_CODE) {
+        $sql = "UPDATE `civicrm_search_task` SET `status` = %2 WHERE `id` = %1";
+        $params[1] = array($searchTaskId, 'String');
+        $params[2] = array(CRM_Searchactiondesigner_Status::OVERRIDDEN, 'Integer');
+        CRM_Core_DAO::executeQuery($sql, $params);
+      }
+    }
+  }
+
+  /**
+   * Store the search tasj name so we know that we are importing this search task
+   * and should not update its status on the way.
+   *
+   * @param $searchTaskName
+   */
+  public static function setSearchTaskToImportingState($searchTaskName) {
+    self::$importingSearchTasks[] = $searchTaskName;
   }
 
 }

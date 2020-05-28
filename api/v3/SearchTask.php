@@ -31,8 +31,13 @@ function civicrm_api3_search_task_create($params) {
   if (isset($params['id'])) {
     $id = $params['id'];
   }
+  if (!isset($params['id']) && !isset($params['status'])) {
+    $params['status'] = CRM_Searchactiondesigner_Status::IN_DATABASE;
+  }
   $params['name'] = CRM_Searchactiondesigner_BAO_SearchTask::checkName($params['title'], $id, $params['name']);
-  return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  $return = _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  CRM_Searchactiondesigner_BAO_SearchTask::updateAndChekStatus($return['id']);
+  return $return;
 }
 
 /**

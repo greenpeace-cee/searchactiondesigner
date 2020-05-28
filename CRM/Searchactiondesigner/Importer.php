@@ -21,6 +21,7 @@ class CRM_Searchactiondesigner_Importer {
     $new_status = null;
     $new_id = null;
 
+    CRM_Searchactiondesigner_BAO_SearchTask::setSearchTaskToImportingState($data['name']);
     switch ($status) {
       case CRM_Searchactiondesigner_Status::IN_DATABASE:
         // Update to overriden
