@@ -38,6 +38,26 @@
           <div class="clear"></div>
         </div>
       {/foreach}
+
+      {foreach from=$actionProviderGroupedMappingFields item=group}
+        <div class="crm-accordion-wrapper collapsed">
+          <div class="crm-accordion-header">{$group.title}</div>
+          <div class="crm-accordion-body">
+            {foreach from=$group.fields item=elementName}
+              <div class="crm-section">
+                <div class="label">{$form.$elementName.label}</div>
+                <div class="content">
+                  {$form.$elementName.html}
+                  {if ($actionProviderMappingDescriptions.$elementName)}
+                    <br /><span class="description">{$actionProviderMappingDescriptions.$elementName}</span>
+                  {/if}
+                </div>
+                <div class="clear"></div>
+              </div>
+            {/foreach}
+          </div>
+        </div>
+      {/foreach}
     </div>
   </div>
 {/crmScope}

@@ -22,6 +22,8 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
 
   protected $actionMapping = array();
 
+  protected $availableFields = array();
+
   /**
    * @var Civi\ActionProvider\Action\AbstractAction
    */
@@ -63,6 +65,8 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
       $this->actionClass = $provider->getActionByName($type);
     }
     $this->assign('actionClass', $this->actionClass);
+
+    $this->availableFields = CRM_Searchactiondesigner_Mapping::getFieldsForMapping($this->searchTaskId, $this->actionId);
   }
 
   public function buildQuickForm() {
@@ -155,30 +159,50 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
   }
 
   public function addMapping() {
-    $availableFields = CRM_Searchactiondesigner_Mapping::getFieldsForMapping($this->searchTaskId, $this->actionId);
     $actionProviderMappingFields = array();
     $actionProviderMappingDescriptions = array();
-    $defaults = array();
     foreach($this->actionClass->getParameterSpecification() as $spec) {
-      $name = $this->actionType.'_mapping_'.$spec->getName();
-      if ($spec->getDescription()) {
-        $actionProviderMappingDescriptions[$name] = $spec->getDescription();
-      }
-      $this->add('select', $name, $spec->getTitle(), $availableFields, $spec->isRequired(), array(
-        'style' => 'min-width:250px',
-        'class' => 'crm-select2 huge',
-        'placeholder' => E::ts('- select -'),
-        'multiple' => $spec->isMultiple(),
-      ));
-      $actionProviderMappingFields[] = $name;
-
-      if (isset($this->actionMapping[$spec->getName()])) {
-        $defaults[$name] = $this->actionMapping[$spec->getName()];
+      if ($spec instanceof \Civi\ActionProvider\Parameter\SpecificationGroup) {
+        $actionProviderGroupedMappingFields[$spec->getName()]['title'] = $spec->getTitle();
+        foreach($spec->getSpecificationBag() as $subSpec) {
+          list($name, $description) = $this->addMappingField($subSpec);
+          $actionProviderGroupedMappingFields[$spec->getName()]['fields'][] = $name;
+          if ($description) {
+            $actionProviderMappingDescriptions[$name] = $description;
+          }
+        }
+      } else {
+        list($name, $description) = $this->addMappingField($spec);
+        $actionProviderMappingFields[] = $name;
+        if ($description) {
+          $actionProviderMappingDescriptions[$name] = $description;
+        }
       }
     }
     $this->assign('actionProviderMappingFields', $actionProviderMappingFields);
+    $this->assign('actionProviderGroupedMappingFields', $actionProviderGroupedMappingFields);
     $this->assign('actionProviderMappingDescriptions', $actionProviderMappingDescriptions);
-    $this->setDefaults($defaults);
+  }
+
+  protected function addMappingField($spec) {
+    $name = $this->actionType.'_mapping_'.$spec->getName();
+    $description = null;
+    if ($spec->getDescription()) {
+      $description = $spec->getDescription();
+    }
+    $this->add('select', $name, $spec->getTitle(), $this->availableFields, $spec->isRequired(), array(
+      'style' => 'min-width:250px',
+      'class' => 'crm-select2 huge',
+      'placeholder' => E::ts('- select -'),
+      'multiple' => $spec->isMultiple(),
+    ));
+
+    if (isset($this->actionMapping[$spec->getName()])) {
+      $defaults[$name] = $this->actionMapping[$spec->getName()];
+      $this->setDefaults($defaults);
+    }
+
+    return [$name, $description];
   }
 
   public function processMapping($submittedValues) {
