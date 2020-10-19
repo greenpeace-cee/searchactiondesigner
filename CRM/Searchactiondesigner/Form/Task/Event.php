@@ -25,6 +25,7 @@ class CRM_Searchactiondesigner_Form_Task_Event extends CRM_Event_Form_Task {
 
     $this->searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
     $this->assign('searchTask', $this->searchTask);
+    $this->assign('status', E::ts("Number of selected participants: %1", array(1=>count($this->_participantIds))));
   }
 
   protected function setEntityShortName() {
