@@ -235,7 +235,7 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
       }
 
       // Create a condition class for this action
-      if (!is_array($action['condition_configuration'])) {
+      if (!isset($action['condition_configuration']) || !is_array($action['condition_configuration'])) {
         $action['condition_configuration'] = array();
       }
       if (!isset($action['condition_configuration']['parameter_mapping']) || !is_array($action['condition_configuration']['parameter_mapping'])) {
