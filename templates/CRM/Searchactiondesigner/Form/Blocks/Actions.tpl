@@ -23,6 +23,7 @@
                     <td>{if ($action.weight && !is_numeric($action.weight))}{$action.weight}{/if}</td>
                     <td>
                         <a href="{crmURL p="civicrm/searchactiondesigner/action" q="reset=1&action=update&search_task_id=`$action.search_task_id`&id=`$action.id`"}">{ts}Edit{/ts}</a>
+                        <a href="{crmURL p="civicrm/searchactiondesigner/condition" q="reset=1&action=update&search_task_id=`$action.search_task_id`&id=`$action.id`"}">{ts}Condition{/ts}</a>
                         <a href="{crmURL p="civicrm/searchactiondesigner/action" q="reset=1&action=delete&search_task_id=`$action.search_task_id`&id=`$action.id`"}">{ts}Remove{/ts}</a>
                     </td>
                 </tr>

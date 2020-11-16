@@ -87,6 +87,9 @@ function civicrm_api3_search_task_action_get($params) {
     if (isset($value['mapping'])) {
       $return['values'][$id]['mapping'] = json_decode($value['mapping'], TRUE);
     }
+    if (isset($value['condition_configuration'])) {
+      $return['values'][$id]['condition_configuration'] = json_decode($value['condition_configuration'], TRUE);
+    }
   }
   return $return;
 }

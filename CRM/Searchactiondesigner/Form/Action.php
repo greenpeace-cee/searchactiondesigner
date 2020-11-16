@@ -2,6 +2,7 @@
 
 use CRM_Searchactiondesigner_ExtensionUtil as E;
 use Civi\ActionProvider\Utils\UserInterface\AddConfigToQuickForm;
+use Civi\ActionProvider\Utils\UserInterface\AddMappingToQuickForm;
 
 /**
  * Form controller class
@@ -96,8 +97,7 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
       AddConfigToQuickForm::buildForm($this, $this->actionClass, $this->actionType);
       $defaults = AddConfigToQuickForm::setDefaultValues($this->actionClass, $this->actionConfiguration, $this->actionType);
       $this->setDefaults($defaults);
-
-      $this->addMapping();
+      AddMappingToQuickForm::addMapping('parameter_', $this->actionClass->getParameterSpecification() , $this->actionMapping, $this, $this->availableFields);
     }
 
     $this->addButtons(array(
@@ -150,70 +150,12 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
     if ($this->actionClass) {
       $configuration = AddConfigToQuickForm::getSubmittedConfiguration($this, $this->actionClass, $this->actionType);
       $params['configuration'] = $configuration;
-      $params['mapping'] = $this->processMapping($values);
+      $params['mapping'] = AddMappingToQuickForm::processMapping($values,'parameter_', $this->actionClass->getParameterSpecification());
     }
 
     $result = civicrm_api3('SearchTaskAction', 'create', $params);
 
     CRM_Utils_System::redirect($redirectUrl);
-  }
-
-  public function addMapping() {
-    $actionProviderMappingFields = array();
-    $actionProviderMappingDescriptions = array();
-    foreach($this->actionClass->getParameterSpecification() as $spec) {
-      if ($spec instanceof \Civi\ActionProvider\Parameter\SpecificationGroup) {
-        $actionProviderGroupedMappingFields[$spec->getName()]['title'] = $spec->getTitle();
-        foreach($spec->getSpecificationBag() as $subSpec) {
-          list($name, $description) = $this->addMappingField($subSpec);
-          $actionProviderGroupedMappingFields[$spec->getName()]['fields'][] = $name;
-          if ($description) {
-            $actionProviderMappingDescriptions[$name] = $description;
-          }
-        }
-      } else {
-        list($name, $description) = $this->addMappingField($spec);
-        $actionProviderMappingFields[] = $name;
-        if ($description) {
-          $actionProviderMappingDescriptions[$name] = $description;
-        }
-      }
-    }
-    $this->assign('actionProviderMappingFields', $actionProviderMappingFields);
-    $this->assign('actionProviderGroupedMappingFields', $actionProviderGroupedMappingFields);
-    $this->assign('actionProviderMappingDescriptions', $actionProviderMappingDescriptions);
-  }
-
-  protected function addMappingField($spec) {
-    $name = $this->actionType.'_mapping_'.$spec->getName();
-    $description = null;
-    if ($spec->getDescription()) {
-      $description = $spec->getDescription();
-    }
-    $this->add('select', $name, $spec->getTitle(), $this->availableFields, $spec->isRequired(), array(
-      'style' => 'min-width:250px',
-      'class' => 'crm-select2 huge',
-      'placeholder' => E::ts('- select -'),
-      'multiple' => $spec->isMultiple(),
-    ));
-
-    if (isset($this->actionMapping[$spec->getName()])) {
-      $defaults[$name] = $this->actionMapping[$spec->getName()];
-      $this->setDefaults($defaults);
-    }
-
-    return [$name, $description];
-  }
-
-  public function processMapping($submittedValues) {
-    $return = array();
-    foreach($this->actionClass->getParameterSpecification() as $spec) {
-      $name = $this->actionType.'_mapping_'.$spec->getName();
-      if (isset($submittedValues[$name])) {
-        $return[$spec->getName()] = $submittedValues[$name];
-      }
-    }
-    return $return;
   }
 
 }

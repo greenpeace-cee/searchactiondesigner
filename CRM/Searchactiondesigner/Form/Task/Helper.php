@@ -225,19 +225,66 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
     $mapping['id'] = $id;
     foreach($actions as $action) {
       $actionClass = $actionProvider->getBatchActionByName($action['type'], $action['configuration'], $batchName);
-
       $parameterBag = $actionProvider->createParameterBag();
       $conditionParameters = $actionProvider->createParameterBag();
       $invalidConditionOutput = $actionProvider->createParameterBag();
       foreach($mapping as $field => $value) {
         $parameterBag->setParameter($field, $value);
+        $conditionParameters->setParameter($field, $value);
+        $invalidConditionOutput->setParameter($field, $value);
       }
+
+      // Create a condition class for this action
+      if (!is_array($action['condition_configuration'])) {
+        $action['condition_configuration'] = array();
+      }
+      if (!isset($action['condition_configuration']['parameter_mapping']) || !is_array($action['condition_configuration']['parameter_mapping'])) {
+        $action['condition_configuration']['parameter_mapping'] = array();
+      }
+      if (!isset($action['condition_configuration']['output_mapping']) || !is_array($action['condition_configuration']['output_mapping'])) {
+        $action['condition_configuration']['output_mapping'] = array();
+      }
+      $condition = self::getConditionClass($action['condition_configuration']);
+      $actionClass->setCondition($condition);
+
       $mappedParameterBag = $actionProvider->createdMappedParameterBag($parameterBag, $action['mapping']);
-      $output = $actionClass->execute($mappedParameterBag, $conditionParameters, $invalidConditionOutput);
+      $mappedConditionParameters = $actionProvider->createdMappedParameterBag($conditionParameters, $action['condition_configuration']['parameter_mapping']);
+      $mappedInvalidConditionOutput = $actionProvider->createdMappedParameterBag($invalidConditionOutput, $action['condition_configuration']['output_mapping']);
+      $output = $actionClass->execute($mappedParameterBag, $mappedConditionParameters, $mappedInvalidConditionOutput);
       foreach($output->toArray() as $key => $value) {
         $mapping['action.' . $action['name'] . '.' . $key] = $value;
       }
     }
+  }
+
+  /**
+   * Returns null or a ActionProvider AbstractCondition class.
+   * @param $condition_configuration
+   *
+   * @return \Civi\ActionProvider\Condition\AbstractCondition|null
+   */
+  public static function getConditionClass($condition_configuration) {
+    if (!is_array($condition_configuration) || empty($condition_configuration) || !isset($condition_configuration['name'])) {
+      return null;
+    }
+    $provider = searchactiondesigner_get_action_provider();
+    $condition = $provider->getConditionByName($condition_configuration['name']);
+    if ($condition) {
+      $configuration = $condition->getDefaultConfiguration();
+      if (isset($condition_configuration['configuration']) && is_string($condition_configuration['configuration'])) {
+        $condition_configuration['configuration'] = json_decode($condition_configuration['configuration'], TRUE);
+      }
+      if (empty($condition_configuration['configuration']) || !is_array($condition_configuration['configuration'])) {
+        $condition_configuration['configuration'] = [];
+      }
+      foreach ($condition_configuration['configuration'] as $name => $value) {
+        $configuration->setParameter($name, $value);
+      }
+      $condition->setConfiguration($configuration);
+
+      return $condition;
+    }
+    return null;
   }
 
 }

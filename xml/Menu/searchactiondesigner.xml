@@ -25,6 +25,12 @@
     <access_arguments>administer CiviCRM</access_arguments>
   </item>
   <item>
+    <path>civicrm/searchactiondesigner/condition</path>
+    <page_callback>CRM_Searchactiondesigner_Form_Condition</page_callback>
+    <title>Condition</title>
+    <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+  <item>
     <path>civicrm/searchactiondesigner/import</path>
     <page_callback>CRM_Searchactiondesigner_Form_Import</page_callback>
     <title>Import</title>
