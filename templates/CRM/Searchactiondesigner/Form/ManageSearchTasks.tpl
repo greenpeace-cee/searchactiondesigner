@@ -85,7 +85,7 @@
               {/if}
               <td>
                 {$search_task.status_label}
-                {if ($search_task.status eq 3)}
+                {if ($search_task.status eq 2)}
                   <span>
                       <a href="{crmURL p='civicrm/searchactiondesigner/edit' q="reset=1&action=revert&id=`$search_task.id`"}"  class="" title="{ts}Revert Search Task{/ts}">
                           {ts}Revert{/ts}

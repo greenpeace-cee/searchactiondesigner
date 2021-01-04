@@ -120,4 +120,26 @@ class CRM_Searchactiondesigner_BAO_SearchTask extends CRM_Searchactiondesigner_D
     self::$importingSearchTasks[] = $searchTaskName;
   }
 
+  /**
+   * Revert a data processor to the state in code.
+   */
+  public static function revert($id) {
+    $dao = \CRM_Core_DAO::executeQuery("SELECT status, source_file FROM civicrm_search_task WHERE id = %1", array(1=>array($id, 'Integer')));
+    if (!$dao->fetch()) {
+      return false;
+    }
+    if ($dao->status != CRM_Searchactiondesigner_Status::OVERRIDDEN) {
+      return false;
+    }
+    $key = substr($dao->source_file, 0, stripos($dao->source_file, "/"));
+    $extension = civicrm_api3('Extension', 'getsingle', array('key' => $key));
+    $filename = $extension['path'].substr($dao->source_file, stripos($dao->source_file, "/"));
+    $data = file_get_contents($filename);
+    $data = json_decode($data, true);
+
+    CRM_Searchactiondesigner_BAO_SearchTask::setSearchTaskToImportingState($data['name']);
+    CRM_Searchactiondesigner_Importer::importSearchTask($data, $dao->source_file, $id);
+    return true;
+  }
+
 }

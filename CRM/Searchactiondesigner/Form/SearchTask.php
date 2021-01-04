@@ -36,7 +36,7 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
         CRM_Utils_System::redirect($session->readUserContext());
         break;
       case CRM_Core_Action::REVERT:
-        //CRM_Dataprocessor_BAO_DataProcessor::revert($this->dataProcessorId);
+        CRM_Searchactiondesigner_BAO_SearchTask::revert($this->searchTaskId);
         $session->setStatus('Search task reverted', 'Revert', 'success');
         CRM_Utils_System::redirect($session->readUserContext());
         break;
