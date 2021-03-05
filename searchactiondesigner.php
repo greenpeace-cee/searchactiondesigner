@@ -73,7 +73,9 @@ function searchactiondesigner_civicrm_navigationMenu(&$menu) {
  */
 function searchactiondesigner_civicrm_container(ContainerBuilder $container) {
   // Register the TypeFactory
-  $container->setDefinition('searchactiondesigner_provider', new Definition('Civi\Searchactiondesigner\Library'));
+  $definition = new Definition('Civi\Searchactiondesigner\Library');
+  $definition->setPrivate(FALSE);
+  $container->setDefinition('searchactiondesigner_provider', $definition);
 }
 
 /**
