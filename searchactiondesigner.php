@@ -74,7 +74,10 @@ function searchactiondesigner_civicrm_navigationMenu(&$menu) {
 function searchactiondesigner_civicrm_container(ContainerBuilder $container) {
   // Register the TypeFactory
   $definition = new Definition('Civi\Searchactiondesigner\Library');
-  $definition->setPrivate(FALSE);
+  $definition->setPublic(true);
+  if (method_exists(Definition::class, 'setPrivate')) {
+    $definition->setPrivate(FALSE);
+  }
   $container->setDefinition('searchactiondesigner_provider', $definition);
 }
 
