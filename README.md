@@ -12,7 +12,7 @@ The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
 After you have installed this extension you can design your search action under Administer --> Customize Data and Screens --> Search Action Designer.
 
-## Documenation
+## Documentation
 
 * [How to create a search action for sending renewal letters and update the activity status](docs/create_a_search_action.md)
 * [Exporting and importing a search action](docs/export_import.md)
