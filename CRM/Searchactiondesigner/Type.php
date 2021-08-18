@@ -43,7 +43,7 @@ class CRM_Searchactiondesigner_Type {
         ),
         'case' => array(
           'title' => E::ts('Case search tasks'),
-          'class' => 'CRM_Searchactiondesigner_Form_Task_Task',
+          'class' => 'CRM_Searchactiondesigner_Form_Task_Case',
           'id_field_title' => E::ts('Case ID'),
         ),
       );
