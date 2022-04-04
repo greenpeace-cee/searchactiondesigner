@@ -108,7 +108,8 @@ function _searchactiondesigner_prereqCheck() {
 function searchactiondesigner_civicrm_managed(&$entities) {
   $unmet = CRM_Searchactiondesigner_Upgrader::checkExtensionDependencies();
   CRM_Searchactiondesigner_Upgrader::displayDependencyErrors($unmet);
-  if (!count($unmet)) {
+  // following test prevents an error after an upgrade
+  if (!count($unmet) && \Civi\Core\Container::singleton()->has('formfieldlibrary')) {
     $imported = CRM_Searchactiondesigner_Importer::importFromExtensions();
     $importedTitles = array();
     foreach($imported as $import) {
@@ -127,13 +128,16 @@ function searchactiondesigner_civicrm_managed(&$entities) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
  */
 function searchactiondesigner_civicrm_xmlMenu(&$files) {
-  $imported = CRM_Searchactiondesigner_Importer::importFromExtensions();
-  $importedTitles = array();
-  foreach($imported as $import) {
-    $importedTitles[] = $import['title'];
-  }
-  if (count($importedTitles)) {
-    CRM_Core_Session::setStatus(E::ts("Search actions imported: <br>-&nbsp;%1", array(1=>implode("<br>-&nbsp;", $importedTitles))), E::ts("Imported Search Actions"), 'success' );
+  // following test prevents an error after an upgrade
+  if(\Civi\Core\Container::singleton()->has('formfieldlibrary')) {
+    $imported = CRM_Searchactiondesigner_Importer::importFromExtensions();
+    $importedTitles = array();
+    foreach($imported as $import) {
+      $importedTitles[] = $import['title'];
+    }
+    if (count($importedTitles)) {
+      CRM_Core_Session::setStatus(E::ts("Search actions imported: <br>-&nbsp;%1", array(1=>implode("<br>-&nbsp;", $importedTitles))), E::ts("Imported Search Actions"), 'success' );
+    }
   }
   _searchactiondesigner_civix_civicrm_xmlMenu($files);
 }
