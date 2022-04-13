@@ -1,5 +1,6 @@
-Version 1.13 (not yet released)
+Version 1.13 
 ------------
+* Fix for a possible CiviCRM upgrade error !5
 
 Version 1.12
 ------------
