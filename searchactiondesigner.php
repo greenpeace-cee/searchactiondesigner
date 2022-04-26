@@ -44,6 +44,7 @@ function searchactiondesigner_civicrm_searchTasks( $objectType, &$tasks ) {
     $task['title'] = $searchTask['title'];
     $task['class'] = CRM_Searchactiondesigner_Type::getClassNameByType($searchTask['type']);
     $task['result'] = false;
+    $task['url'] = 'civicrm/searchactiondesigner/form/task/contact?searchactiondesigner_id='.$searchTask['id'];
     $tasks[$id] = $task;
   }
 }

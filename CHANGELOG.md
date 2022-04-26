@@ -1,8 +1,9 @@
 Version 1.14 (not yet released)
 ------------
 
+* Contact search actions now work with search kit.
 
-Version 1.13 
+Version 1.13
 ------------
 * Fix for a possible CiviCRM upgrade error !5
 
