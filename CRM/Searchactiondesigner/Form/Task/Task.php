@@ -15,7 +15,15 @@ class CRM_Searchactiondesigner_Form_Task_Task extends CRM_Core_Form_Task {
     $this->setEntityShortName();
     $session = CRM_Core_Session::singleton();
     $url = $session->readUserContext();
-    parent::preProcess();
+    // Standalone mode e.g. from SearchKit
+    $isStandalone = !empty($_GET['id']) && !empty($_GET['searchactiondesigner_id']);
+    if ($isStandalone) {
+      $this->_task = 'searchactiondesigner_' . $_GET['searchactiondesigner_id'];
+      $this->_entityIds = explode(',', CRM_Utils_Request::retrieve('id', 'CommaSeparatedIntegers', $this, TRUE));
+    }
+    else {
+      parent::preProcess();
+    }
     $session->replaceUserContext($url);
 
     if (strpos($this->_task,'searchactiondesigner_') !== 0) {
