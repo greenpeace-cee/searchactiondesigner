@@ -44,8 +44,12 @@ function searchactiondesigner_civicrm_searchTasks( $objectType, &$tasks ) {
     $task['title'] = $searchTask['title'];
     $task['class'] = CRM_Searchactiondesigner_Type::getClassNameByType($searchTask['type']);
     $task['result'] = false;
+    // Support for standalone actions (e.g. from SearchKit)
     if ($objectType == 'contact') {
       $task['url'] = 'civicrm/searchactiondesigner/form/task/contact?searchactiondesigner_id=' . $searchTask['id'];
+    }
+    else {
+      $task['url'] = 'civicrm/searchactiondesigner/form/task/generic?searchactiondesigner_id=' . $searchTask['id'];
     }
     $tasks[$id] = $task;
   }
@@ -255,13 +259,58 @@ function searchactiondesigner_civicrm_entityTypes(&$entityTypes) {
   _searchactiondesigner_civix_civicrm_entityTypes($entityTypes);
 }
 
-// --- Functions below this ship commented out. Uncomment as required. ---
+/**
+ * Implements hook_search_action_designer_types().
+ *
+ * Makes all APIv4 entities available as actions for use in SearchKit
+ */
+function searchactiondesigner_search_action_designer_types(&$types) {
+  $searchKit = civicrm_api3('Extension', 'get', [
+    'key' => 'org.civicrm.search_kit',
+    'status' => 'installed',
+  ]);
+  if (!empty($searchKit['values'])) {
+    $entities = civicrm_api4('Entity', 'get', [
+      'where' => [
+        ['searchable', '!=', 'none'],
+      ],
+    ]);
+    foreach ($entities as $entity) {
+      $types['search_kit_' . $entity['name']] = [
+        'title' => E::ts('Search Kit: %1', [1 => $entity['title_plural']]),
+        'class' => 'CRM_Searchactiondesigner_Form_Task_Task',
+        'id_field_title' => E::ts('%1 ID', [1 => $entity['title']]),
+      ];
+    }
+  }
+}
 
 /**
- * Implements hook_civicrm_preProcess().
+ * Implements hook_civicrm_searchKitTasks().
  *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_preProcess
+ * Generate list of tasks for SearchKit
  *
-function searchactiondesigner_civicrm_preProcess($formName, &$form) {
+ * @param array $tasks
+ * @param bool $checkPermissions
+ * @param int $userId
+ */
+function searchactiondesigner_civicrm_searchKitTasks(&$tasks, $checkPermissions, $userId) {
+  $searchTasks = civicrm_api3('SearchTask', 'get', [
+    'is_active' => 1,
+    'options' => ['limit' => 0],
+    'type' => ['LIKE' => 'search_kit_%'],
+  ]);
+  foreach($searchTasks['values'] as $searchTask) {
+    $task = [];
+    $id = 'searchactiondesigner_' . $searchTask['id'];
+    $entity = substr($searchTask['type'], strlen('search_kit_'));
 
-} // */
+    $task['title'] = $searchTask['title'];
+    $task['icon'] = 'fa-gears';
+    $task['crmPopup'] = [
+      'path' => "'civicrm/searchactiondesigner/form/task/generic'",
+      'query' => "{searchactiondesigner_id: {$searchTask['id']}, reset: 1, id: ids.join(',')}",
+    ];
+    $tasks[$entity][$id] = $task;
+  }
+}
