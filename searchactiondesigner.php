@@ -104,17 +104,8 @@ function _searchactiondesigner_prereqCheck() {
   CRM_Searchactiondesigner_Upgrader::displayDependencyErrors($unmet);
 }
 
-/**
- * Implements hook_civicrm_managed().
- *
- * Generate a list of entities to create/deactivate/delete when this module
- * is installed, disabled, uninstalled.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
- */
-function searchactiondesigner_civicrm_managed(&$entities) {
+function _searchactiondesigner_import() {
   $unmet = CRM_Searchactiondesigner_Upgrader::checkExtensionDependencies();
-  CRM_Searchactiondesigner_Upgrader::displayDependencyErrors($unmet);
   // following test prevents an error after an upgrade
   if (!count($unmet) && \Civi\Core\Container::singleton()->has('formfieldlibrary')) {
     $imported = CRM_Searchactiondesigner_Importer::importFromExtensions();
@@ -126,6 +117,18 @@ function searchactiondesigner_civicrm_managed(&$entities) {
       CRM_Core_Session::setStatus(E::ts("Search actions imported: <br>-&nbsp;%1", array(1=>implode("<br>-&nbsp;", $importedTitles))), E::ts("Imported Search Actions"), 'success' );
     }
   }
+}
+
+/**
+ * Implements hook_civicrm_managed().
+ *
+ * Generate a list of entities to create/deactivate/delete when this module
+ * is installed, disabled, uninstalled.
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_managed
+ */
+function searchactiondesigner_civicrm_managed(&$entities) {
+  _searchactiondesigner_import();
   _searchactiondesigner_civix_civicrm_managed($entities);
 }
 
@@ -135,17 +138,6 @@ function searchactiondesigner_civicrm_managed(&$entities) {
  * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
  */
 function searchactiondesigner_civicrm_xmlMenu(&$files) {
-  // following test prevents an error after an upgrade
-  if(\Civi\Core\Container::singleton()->has('formfieldlibrary')) {
-    $imported = CRM_Searchactiondesigner_Importer::importFromExtensions();
-    $importedTitles = array();
-    foreach($imported as $import) {
-      $importedTitles[] = $import['title'];
-    }
-    if (count($importedTitles)) {
-      CRM_Core_Session::setStatus(E::ts("Search actions imported: <br>-&nbsp;%1", array(1=>implode("<br>-&nbsp;", $importedTitles))), E::ts("Imported Search Actions"), 'success' );
-    }
-  }
   _searchactiondesigner_civix_civicrm_xmlMenu($files);
 }
 

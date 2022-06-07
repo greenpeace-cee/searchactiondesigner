@@ -1,6 +1,7 @@
-Version 1.14 (not yet released)
+Version 1.14
 ------------
 
+* Importing search tasks only after a cache clear.
 * Contact search actions now work with search kit.
 
 Version 1.13
