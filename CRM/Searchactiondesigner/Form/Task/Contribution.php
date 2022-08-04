@@ -29,7 +29,7 @@ class CRM_Searchactiondesigner_Form_Task_Contribution extends CRM_Contribute_For
 
   public function buildQuickForm() {
     CRM_Searchactiondesigner_Form_Task_Helper::buildQuickForm($this, $this->searchTaskId);
-    $this->addDefaultButtons(E::ts('Next', 'upload'));
+    $this->addDefaultButtons(E::ts('Next'), 'upload');
   }
 
   public function postProcess() {

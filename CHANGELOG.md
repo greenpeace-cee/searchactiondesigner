@@ -1,5 +1,7 @@
-Version 1.16 (not yet released)
+Version 1.16
 ------------
+
+* Fixed regression bug (typo).
 
 Version 1.15
 ------------
