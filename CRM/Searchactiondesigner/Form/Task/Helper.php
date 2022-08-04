@@ -78,6 +78,7 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
         CRM_Core_Session::setStatus($search_task['success_message'], $search_task['title'], 'success');
       }
       $actionProvider->finishBatch($name, true);
+      self::finishBatchOnFormFields($search_task_id, $submittedValues);
     } else {
       // Create a batch
       $session = CRM_Core_Session::singleton();
@@ -117,7 +118,7 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
           'CRM_Searchactiondesigner_Form_Task_Helper',
           'finishBatch'
         ), //call back method
-        array($search_task_id), //parameters,
+        array($search_task_id, $submittedValues), //parameters,
         $title
       );
       //now add this task to the queue
@@ -163,11 +164,12 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
    *
    * @param $ctx
    * @param $search_task_id
+   * @param array $submittedValues
    *
    * @return bool
    * @throws \CiviCRM_API3_Exception
    */
-  public static function finishBatch(CRM_Queue_TaskContext $ctx, $search_task_id) {
+  public static function finishBatch(CRM_Queue_TaskContext $ctx, $search_task_id, $submittedValues=[]) {
     // Set time limit to 0 as this script may run for quite a while. Depending on the
     // actions.
     set_time_limit(0);
@@ -185,11 +187,32 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
     // We do this so the actions are initialized and able to finish.
     $actions = self::getActions($search_task_id);
     foreach($actions as $action) {
-      $actionClass = $actionProvider->getBatchActionByName($action['type'], $action['configuration'], $batchName);
+      $actionProvider->getBatchActionByName($action['type'], $action['configuration'], $batchName);
     }
     // Finish the batch.
     $actionProvider->finishBatch($batchName, true);
+
+    self::finishBatchOnFormFields($search_task_id, $submittedValues);
     return TRUE;
+  }
+
+  /**
+   * Call onBatchFinished on each field.
+   * @param $search_task_id
+   * @param $submittedValues
+   *
+   * @return void
+   * @throws \CiviCRM_API3_Exception
+   */
+  protected static function finishBatchOnFormFields($search_task_id, $submittedValues) {
+    $fieldLibrary = searchactiondesigner_get_form_field_library();
+    $fields = self::getFields($search_task_id);
+    foreach($fields as $field) {
+      $fieldClass = $fieldLibrary->getFieldTypeByName($field['type']);
+      if ($fieldClass) {
+        $fieldClass->onBatchFinished($field, $submittedValues);
+      }
+    }
   }
 
   /**

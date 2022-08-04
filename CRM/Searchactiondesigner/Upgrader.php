@@ -59,7 +59,7 @@ class CRM_Searchactiondesigner_Upgrader extends CRM_Searchactiondesigner_Upgrade
         }
       }
       if ($ext['key'] == 'formfieldlibrary' && $ext['status'] == 'installed') {
-        if (version_compare($ext['version'], '1.0', '>=')) {
+        if (version_compare($ext['version'], '1.11', '>=')) {
           unset($unmet[array_search('formfieldlibrary', $unmet)]);
         }
       }

@@ -33,7 +33,7 @@ class CRM_Searchactiondesigner_Form_Task_Contact extends CRM_Contact_Form_Task {
 
   public function buildQuickForm() {
     CRM_Searchactiondesigner_Form_Task_Helper::buildQuickForm($this, $this->searchTaskId);
-    $this->addDefaultButtons(E::ts('Next'));
+    $this->addDefaultButtons(E::ts('Next'), 'upload');
   }
 
   public function postProcess() {

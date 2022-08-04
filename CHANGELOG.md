@@ -1,5 +1,7 @@
-Version 1.15-dev
+Version 1.15
 ------------
+
+* Make it possible to do file uploads. Requires Form Field Library version 1.11 or newer.
 
 Version 1.14
 ------------
