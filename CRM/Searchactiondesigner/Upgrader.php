@@ -15,6 +15,11 @@ class CRM_Searchactiondesigner_Upgrader extends CRM_Searchactiondesigner_Upgrade
 
   }
 
+  public function upgrade_1001() {
+    CRM_Core_DAO::executeQuery("ALTER TABLE `civicrm_search_task` ADD COLUMN `permission` varchar(255) NULL;");
+    return TRUE;
+  }
+
   /**
    * Look up extension dependency error messages and display as Core Session Status
    *
@@ -37,7 +42,7 @@ class CRM_Searchactiondesigner_Upgrader extends CRM_Searchactiondesigner_Upgrade
       case 'action-provider':
         return ts('Search Action Designer was installed successfully, but you must also install and enable the <a href="%1">action-provider Extension (version 1.37 or newer)</a>.', array(1 => 'https://lab.civicrm.org/extensions/action-provider'));
       case 'formfieldlibrary':
-        return ts('Search Action Designer was installed successfully, but you must also install and enable the <a href="%1">formfieldlibrary Extension</a>.', array(1 => 'https://lab.civicrm.org/extensions/formfieldlibrary'));
+        return ts('Search Action Designer was installed successfully, but you must also install and enable the <a href="%1">formfieldlibrary Extension (version 1.11 or newer)</a>.', array(1 => 'https://lab.civicrm.org/extensions/formfieldlibrary'));
     }
 
     CRM_Core_Error::fatal(ts('Unknown error key: %1', array(1 => $unmet)));

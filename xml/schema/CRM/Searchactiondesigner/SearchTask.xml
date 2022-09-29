@@ -86,5 +86,12 @@
     <required>false</required>
     <length>255</length>
   </field>
+  <field>
+    <name>permission</name>
+    <title>Permission</title>
+    <type>varchar</type>
+    <required>false</required>
+    <length>255</length>
+  </field>
 
 </table>

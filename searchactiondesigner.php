@@ -37,6 +37,9 @@ function searchactiondesigner_civicrm_searchTasks( $objectType, &$tasks ) {
     'options' => array('limit' => 0),
   ));
   foreach($searchTasks['values'] as $searchTask) {
+    if (!empty($searchTask['permission']) && !\CRM_Core_Permission::check($searchTask['permission'])) {
+      continue;
+    }
     $task = array();
     // We need this id later to determine which search task builder we need to instanciate
     $id = 'searchactiondesigner_' . $searchTask['id'];
@@ -71,7 +74,6 @@ function searchactiondesigner_civicrm_navigationMenu(&$menu) {
   ));
   _searchactiondesigner_civix_navigationMenu($menu);
 }
-
 
 /**
  * Implements hook_civicrm_container()
@@ -129,16 +131,6 @@ function _searchactiondesigner_import() {
  */
 function searchactiondesigner_civicrm_managed(&$entities) {
   _searchactiondesigner_import();
-  _searchactiondesigner_civix_civicrm_managed($entities);
-}
-
-/**
- * Implements hook_civicrm_xmlMenu().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_xmlMenu
- */
-function searchactiondesigner_civicrm_xmlMenu(&$files) {
-  _searchactiondesigner_civix_civicrm_xmlMenu($files);
 }
 
 /**
@@ -202,42 +194,6 @@ function searchactiondesigner_civicrm_disable() {
  */
 function searchactiondesigner_civicrm_upgrade($op, CRM_Queue_Queue $queue = NULL) {
   return _searchactiondesigner_civix_civicrm_upgrade($op, $queue);
-}
-
-/**
- * Implements hook_civicrm_caseTypes().
- *
- * Generate a list of case-types.
- *
- * Note: This hook only runs in CiviCRM 4.4+.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_caseTypes
- */
-function searchactiondesigner_civicrm_caseTypes(&$caseTypes) {
-  _searchactiondesigner_civix_civicrm_caseTypes($caseTypes);
-}
-
-/**
- * Implements hook_civicrm_angularModules().
- *
- * Generate a list of Angular modules.
- *
- * Note: This hook only runs in CiviCRM 4.5+. It may
- * use features only available in v4.6+.
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_angularModules
- */
-function searchactiondesigner_civicrm_angularModules(&$angularModules) {
-  _searchactiondesigner_civix_civicrm_angularModules($angularModules);
-}
-
-/**
- * Implements hook_civicrm_alterSettingsFolders().
- *
- * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_alterSettingsFolders
- */
-function searchactiondesigner_civicrm_alterSettingsFolders(&$metaDataFolders = NULL) {
-  _searchactiondesigner_civix_civicrm_alterSettingsFolders($metaDataFolders);
 }
 
 /**

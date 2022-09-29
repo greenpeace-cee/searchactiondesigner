@@ -91,6 +91,11 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
       $this->add('wysiwyg', 'help_text', E::ts('Help text for this search task'), array('rows' => 6, 'cols' => 80));
       $this->add('checkbox', 'is_active', E::ts('Enabled'));
       $this->add('text', 'records_per_batch', E::ts('Records per batch'), array('size' => 4, 'maxlength' => 4), TRUE);
+      $this->add('select','permission', E::ts('Permission'), \CRM_Core_Permission::basicPermissions(), FALSE, array(
+        'style' => 'min-width:250px',
+        'class' => 'crm-select2 huge',
+        'placeholder' => E::ts('- select -'),
+      ));
       $this->addRule('records_per_batch', E::ts("Invalid number"), 'numeric');
     }
     if ($this->_action == CRM_Core_Action::ADD) {
@@ -151,6 +156,7 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
     $params['help_text'] = $values['help_text'];
     $params['success_message'] = $values['success_message'];
     $params['records_per_batch'] = $values['records_per_batch'];
+    $params['permission'] = $values['permission'];
     $params['is_active'] = !empty($values['is_active']) ? 1 : 0;
     if ($this->searchTaskId) {
       $params['id'] = $this->searchTaskId;
@@ -198,6 +204,7 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
       $defaults['success_message'] = $searchTask['success_message'];
       $defaults['records_per_batch'] = $searchTask['records_per_batch'];
       $defaults['is_active'] = $searchTask['is_active'];
+      $defaults['permission'] = $searchTask['permission'];
     }
   }
 
