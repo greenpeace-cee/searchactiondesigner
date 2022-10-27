@@ -243,22 +243,26 @@ function searchactiondesigner_search_action_designer_types(&$types) {
  * @param int $userId
  */
 function searchactiondesigner_civicrm_searchKitTasks(&$tasks, $checkPermissions, $userId) {
-  $searchTasks = civicrm_api3('SearchTask', 'get', [
-    'is_active' => 1,
-    'options' => ['limit' => 0],
-    'type' => ['LIKE' => 'search_kit_%'],
-  ]);
-  foreach($searchTasks['values'] as $searchTask) {
-    $task = [];
-    $id = 'searchactiondesigner_' . $searchTask['id'];
-    $entity = substr($searchTask['type'], strlen('search_kit_'));
+  try {
+    $searchTasks = civicrm_api3('SearchTask', 'get', [
+      'is_active' => 1,
+      'options' => ['limit' => 0],
+      'type' => ['LIKE' => 'search_kit_%'],
+    ]);
+    foreach ($searchTasks['values'] as $searchTask) {
+      $task = [];
+      $id = 'searchactiondesigner_' . $searchTask['id'];
+      $entity = substr($searchTask['type'], strlen('search_kit_'));
 
-    $task['title'] = $searchTask['title'];
-    $task['icon'] = 'fa-gears';
-    $task['crmPopup'] = [
-      'path' => "'civicrm/searchactiondesigner/form/task/generic'",
-      'query' => "{searchactiondesigner_id: {$searchTask['id']}, reset: 1, id: ids.join(',')}",
-    ];
-    $tasks[$entity][$id] = $task;
+      $task['title'] = $searchTask['title'];
+      $task['icon'] = 'fa-gears';
+      $task['crmPopup'] = [
+        'path' => "'civicrm/searchactiondesigner/form/task/generic'",
+        'query' => "{searchactiondesigner_id: {$searchTask['id']}, reset: 1, id: ids.join(',')}",
+      ];
+      $tasks[$entity][$id] = $task;
+    }
+  } catch (\CiviCRM_API3_Exception $e) {
+    // Do nothing.
   }
 }
