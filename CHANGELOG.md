@@ -1,5 +1,7 @@
-Version 1.18 (not yet released)
+Version 1.18
 ------------
+
+* Fixed issue with condition configuration form.
 
 Version 1.17
 ------------
