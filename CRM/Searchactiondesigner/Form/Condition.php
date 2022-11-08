@@ -111,6 +111,7 @@ class CRM_Searchactiondesigner_Form_Condition extends CRM_Core_Form {
       AddMappingToQuickForm::addMapping($this->conditionType.'_output_', $this->actionClass->getOutputSpecification(), $this->action['condition_configuration']['output_mapping'], $this, $this->availableFields);
       $this->assign('parameter_mapping_prefix', $this->conditionType.'_parameter_');
       $this->assign('output_mapping_prefix', $this->conditionType.'_output_');
+      $this->assign('isSubmitted', $this->isSubmitted());
     }
 
     $this->addButtons(array(

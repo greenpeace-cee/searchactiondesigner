@@ -35,7 +35,7 @@
         }
       });
 
-      $('#type').change();
+      {/literal}{if !$isSubmitted}{literal}$('#type').change();{/literal}{/if}{literal}
     });
     {/literal}
   </script>
