@@ -1,5 +1,8 @@
-Version 1.19 (not yet released)
+Version 1.19
 ------------
+
+* Minor Fixes.
+* PHP 8.1 does not forgive incorrect order of arguments anymore
 
 Version 1.18
 ------------
