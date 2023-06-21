@@ -135,7 +135,7 @@ class CRM_Searchactiondesigner_Importer {
     }
 
     // Remove all search tasks which are in code or overridden but not imported
-    $dao = CRM_Core_DAO::executeQuery("SELECT id, name FROM civicrm_search_task WHERE id NOT IN (".implode($importedIds, ",").") AND status IN (".CRM_Searchactiondesigner_Status::IN_CODE.", ".CRM_Searchactiondesigner_Status::OVERRIDDEN.")");
+    $dao = CRM_Core_DAO::executeQuery("SELECT id, name FROM civicrm_search_task WHERE id NOT IN (".implode(",",$importedIds).") AND status IN (".CRM_Searchactiondesigner_Status::IN_CODE.", ".CRM_Searchactiondesigner_Status::OVERRIDDEN.")");
     while ($dao->fetch()) {
       civicrm_api3('SearchTask', 'delete', array('id' => $dao->id));
       $return['deleted search tasks'][] = $dao->id.": ".$dao->name;
