@@ -50,6 +50,7 @@ class CRM_Searchactiondesigner_Form_Condition extends CRM_Core_Form {
 
     $this->actionId = CRM_Utils_Request::retrieve('id', 'Integer', \CRM_Core_DAO::$_nullObject, TRUE);
     $this->searchTaskId = CRM_Utils_Request::retrieve('search_task_id', 'Integer', \CRM_Core_DAO::$_nullObject, TRUE);
+    CRM_Searchactiondesigner_Form_Task_Helper::setMetadata($provider->getMetadata(), $this->searchTaskId);
     $this->assign('search_task_id', $this->searchTaskId);
 
     $this->action = civicrm_api3('SearchTaskAction', 'getsingle', array('id' => $this->actionId));

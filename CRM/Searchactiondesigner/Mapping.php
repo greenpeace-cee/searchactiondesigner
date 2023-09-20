@@ -17,6 +17,7 @@ class CRM_Searchactiondesigner_Mapping {
    */
   public static function getFieldsForMapping($search_task_id, $id=null) {
     $actionProvider = searchactiondesigner_get_action_provider();
+    CRM_Searchactiondesigner_Form_Task_Helper::setMetadata($actionProvider->getMetadata(), $search_task_id);
     $fieldLibrary = searchactiondesigner_get_form_field_library();
     $return = array();
     $searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $search_task_id));

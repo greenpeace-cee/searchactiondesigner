@@ -4,6 +4,7 @@
  * @license AGPL-3.0
  */
 
+use Civi\ActionProvider\Parameter\Specification;
 use CRM_Searchactiondesigner_ExtensionUtil as E;
 
 class CRM_Searchactiondesigner_Form_Task_Helper {
@@ -231,6 +232,11 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
     }
   }
 
+  public static function setMetadata(\Civi\ActionProvider\Metadata $metadata, $search_task_id) {
+    $metadata->getSpecificationBag()->addSpecification(new Specification('search_task_tid', 'Integer', E::ts('Search Task ID')));
+    $metadata->getMetadata()->setParameter('search_task_tid', $search_task_id);
+  }
+
   /**
    * Process a single item.
    *
@@ -243,6 +249,7 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
    */
   public static function processItem($id, $inputMapping, $search_task_id, $batchName) {
     $actionProvider = searchactiondesigner_get_action_provider();
+    self::setMetadata($actionProvider->getMetadata(), $search_task_id);
     $actions = self::getActions($search_task_id);
     $mapping = $inputMapping;
     $mapping['id'] = $id;

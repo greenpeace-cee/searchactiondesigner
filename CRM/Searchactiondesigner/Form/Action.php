@@ -44,6 +44,7 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
 
     $this->actionId = CRM_Utils_Request::retrieve('id', 'Integer');
     $this->searchTaskId = CRM_Utils_Request::retrieve('search_task_id', 'Integer');
+    CRM_Searchactiondesigner_Form_Task_Helper::setMetadata($provider->getMetadata(), $this->searchTaskId);
     $this->assign('search_task_id', $this->searchTaskId);
 
 

@@ -40,7 +40,7 @@ class CRM_Searchactiondesigner_Upgrader extends CRM_Searchactiondesigner_Upgrade
   public static function getUnmetDependencyErrorMessage($unmet) {
     switch ($unmet) {
       case 'action-provider':
-        return ts('Search Action Designer was installed successfully, but you must also install and enable the <a href="%1">action-provider Extension (version 1.37 or newer)</a>.', array(1 => 'https://lab.civicrm.org/extensions/action-provider'));
+        return ts('Search Action Designer was installed successfully, but you must also install and enable the <a href="%1">action-provider Extension (version 1.130 or newer)</a>.', array(1 => 'https://lab.civicrm.org/extensions/action-provider'));
       case 'formfieldlibrary':
         return ts('Search Action Designer was installed successfully, but you must also install and enable the <a href="%1">formfieldlibrary Extension (version 1.11 or newer)</a>.', array(1 => 'https://lab.civicrm.org/extensions/formfieldlibrary'));
     }
@@ -59,7 +59,7 @@ class CRM_Searchactiondesigner_Upgrader extends CRM_Searchactiondesigner_Upgrade
     $extensions = civicrm_api3('Extension', 'get', array('options' => array('limit' => 0)));
     foreach($extensions['values'] as $ext) {
       if ($ext['key'] == 'action-provider' && $ext['status'] == 'installed') {
-        if (version_compare($ext['version'], '1.37', '>=')) {
+        if (version_compare($ext['version'], '1.130', '>=')) {
           unset($unmet[array_search('action-provider', $unmet)]);
         }
       }

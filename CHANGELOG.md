@@ -1,3 +1,8 @@
+Version 1.20
+------------
+
+* Add metadata passing to the action provider. Requires Action Provider version 1.130
+
 Version 1.19
 ------------
 

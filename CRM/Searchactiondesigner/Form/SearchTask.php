@@ -19,7 +19,9 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
    * @access public
    */
   function preProcess() {
+    $provider = searchactiondesigner_get_action_provider();
     $this->searchTaskId = CRM_Utils_Request::retrieve('id', 'Integer');
+    CRM_Searchactiondesigner_Form_Task_Helper::setMetadata($provider->getMetadata(), $this->searchTaskId);
     $this->currentUrl = CRM_Utils_System::url('civicrm/searchactiondesigner/edit', array('reset' => 1, 'action' => 'update', 'id' => $this->searchTaskId));
     $this->assign('search_task_id', $this->searchTaskId);
 
