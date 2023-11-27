@@ -20,6 +20,16 @@ class CRM_Searchactiondesigner_Upgrader extends CRM_Extension_Upgrader_Base {
     return TRUE;
   }
 
+  public function upgrade_1002() {
+    CRM_Core_DAO::executeQuery("
+      ALTER TABLE `civicrm_search_task_action`
+      MODIFY `mapping` mediumtext NULL,
+      MODIFY `configuration` mediumtext NULL,
+      MODIFY `condition_configuration` mediumtext NULL
+    ");
+    return TRUE;
+  }
+
   /**
    * Look up extension dependency error messages and display as Core Session Status
    *

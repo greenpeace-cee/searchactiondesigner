@@ -48,7 +48,7 @@
   <field>
     <name>mapping</name>
     <title>Mapping</title>
-    <type>text</type>
+    <type>mediumtext</type>
     <required>false</required>
     <length>255</length>
     <serialize>JSON</serialize>
@@ -56,7 +56,7 @@
   <field>
     <name>configuration</name>
     <title>Configuration</title>
-    <type>text</type>
+    <type>mediumtext</type>
     <required>false</required>
     <length>255</length>
     <serialize>JSON</serialize>
@@ -64,7 +64,7 @@
   <field>
     <name>condition_configuration</name>
     <title>Condition Configuration</title>
-    <type>text</type>
+    <type>mediumtext</type>
     <required>false</required>
     <length>255</length>
     <serialize>JSON</serialize>
