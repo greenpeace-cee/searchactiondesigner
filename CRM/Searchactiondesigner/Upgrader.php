@@ -4,7 +4,7 @@ use CRM_Searchactiondesigner_ExtensionUtil as E;
 /**
  * Collection of upgrade steps.
  */
-class CRM_Searchactiondesigner_Upgrader extends CRM_Searchactiondesigner_Upgrader_Base {
+class CRM_Searchactiondesigner_Upgrader extends CRM_Extension_Upgrader_Base {
 
 
   public function install() {

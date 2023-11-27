@@ -17,15 +17,15 @@
   <version>1.20</version>
   <develStage>stable</develStage>
   <compatibility>
-    <ver>5.0</ver>
-    <ver>5.13</ver>
+    <ver>5.45</ver>
   </compatibility>
   <classloader>
     <psr4 prefix="Civi\" path="Civi"/>
+    <psr0 prefix="CRM_" path="."/>
   </classloader>
   <civix>
     <namespace>CRM/Searchactiondesigner</namespace>
-    <format>22.05.2</format>
+    <format>23.02.1</format>
   </civix>
   <requires>
     <ext>action-provider</ext>
@@ -34,5 +34,8 @@
   <comments>Funded by CiviCooP, Velt, Barnekreftforeningen. Contributors: Aydun</comments>
   <mixins>
     <mixin>menu-xml@1.0.0</mixin>
+    <mixin>smarty-v2@1.0.1</mixin>
+    <mixin>entity-types-php@1.0.0</mixin>
   </mixins>
+  <upgrader>CRM_Searchactiondesigner_Upgrader</upgrader>
 </extension>
