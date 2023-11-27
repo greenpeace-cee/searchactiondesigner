@@ -23,9 +23,9 @@ class CRM_Searchactiondesigner_Upgrader extends CRM_Extension_Upgrader_Base {
   public function upgrade_1002() {
     CRM_Core_DAO::executeQuery("
       ALTER TABLE `civicrm_search_task_action`
-      MODIFY `mapping` mediumtext NULL,
-      MODIFY `configuration` mediumtext NULL,
-      MODIFY `condition_configuration` mediumtext NULL
+      MODIFY `mapping` longtext NULL,
+      MODIFY `configuration` longtext NULL,
+      MODIFY `condition_configuration` longtext NULL
     ");
     return TRUE;
   }

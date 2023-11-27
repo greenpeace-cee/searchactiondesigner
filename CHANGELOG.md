@@ -1,4 +1,4 @@
-Version 1.21 (not yet released)
+Version 1.21
 ------------
 
 * Changed column sizes for the actions.

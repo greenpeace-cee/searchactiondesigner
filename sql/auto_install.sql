@@ -61,9 +61,9 @@ CREATE TABLE `civicrm_search_task_action` (
   `name` varchar(255) NULL,
   `title` varchar(255) NOT NULL,
   `type` varchar(255) NOT NULL,
-  `mapping` mediumtext NULL,
-  `configuration` mediumtext NULL,
-  `condition_configuration` mediumtext NULL,
+  `mapping` longtext NULL,
+  `configuration` longtext NULL,
+  `condition_configuration` longtext NULL,
   `weight` int NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT FK_civicrm_search_task_action_search_task_id FOREIGN KEY (`search_task_id`) REFERENCES `civicrm_search_task`(`id`) ON DELETE CASCADE
