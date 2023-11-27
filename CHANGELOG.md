@@ -1,3 +1,9 @@
+Version 1.21 (not yet released)
+------------
+
+* Changed column sizes for the actions.
+* Upgraded Civix code template
+
 Version 1.20
 ------------
 
