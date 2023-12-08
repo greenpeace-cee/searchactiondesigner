@@ -19,6 +19,7 @@ class CRM_Searchactiondesigner_Type {
         'contact' => array(
           'title' => E::ts('Contact search tasks'),
           'class' => 'CRM_Searchactiondesigner_Form_Task_Contact',
+          'configuration_class' => 'CRM_Searchactiondesigner_Form_Configuration_Contact',
           'id_field_title' => E::ts('Contact ID'),
         ),
         'activity' => array(
@@ -45,6 +46,7 @@ class CRM_Searchactiondesigner_Type {
           'title' => E::ts('Case search tasks'),
           'class' => 'CRM_Searchactiondesigner_Form_Task_Case',
           'id_field_title' => E::ts('Case ID'),
+          'configuration_class' => 'CRM_Searchactiondesigner_Form_Configuration_Case',
         ),
       );
 
@@ -77,6 +79,15 @@ class CRM_Searchactiondesigner_Type {
   public static function getClassNameByType($type) {
     $types = self::getTypes();
     return $types[$type]['class'];
+  }
+
+  public static function getConfigurationClass(string $type):? CRM_Searchactiondesigner_Form_ConfigurationInterface {
+    $types = self::getTypes();
+    if (!empty($types[$type]['configuration_class'])) {
+      $configurationClassName = $types[$type]['configuration_class'];
+      return new $configurationClassName();
+    }
+    return null;
   }
 
   /**

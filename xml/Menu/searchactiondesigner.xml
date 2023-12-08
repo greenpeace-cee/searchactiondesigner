@@ -18,6 +18,11 @@
     <title>SearchTask</title>
   </item>
   <item>
+    <path>civicrm/searchactiondesigner/form/task/case</path>
+    <page_callback>CRM_Searchactiondesigner_Form_Task_Case</page_callback>
+    <title>SearchTask</title>
+  </item>
+  <item>
     <path>civicrm/searchactiondesigner/form/task/generic</path>
     <page_callback>CRM_Searchactiondesigner_Form_Task_Task</page_callback>
     <title>SearchTask</title>

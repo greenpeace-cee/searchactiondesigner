@@ -93,5 +93,13 @@
     <required>false</required>
     <length>255</length>
   </field>
+  <field>
+    <name>configuration</name>
+    <title>Configuration</title>
+    <type>longtext</type>
+    <required>false</required>
+    <length>255</length>
+    <serialize>JSON</serialize>
+  </field>
 
 </table>

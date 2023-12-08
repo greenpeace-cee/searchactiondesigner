@@ -17,6 +17,15 @@ class CRM_Searchactiondesigner_Form_Task_Case extends CRM_Case_Form_Task {
     parent::preProcess();
     $session->replaceUserContext($userContext);
 
+    $isStandAlone = CRM_Utils_Request::retrieve('standalone', 'Integer');
+    if ($isStandAlone) {
+      $userContext = CRM_Utils_System::url('civicrm/contact/view/case', ['reset' => 1, 'id' => reset($this->_entityIds), 'action' => 'view']);
+      $session->replaceUserContext($userContext);
+    }
+
+    if (empty($this->_task) && CRM_Utils_Request::retrieveValue('searchactiondesigner_id', 'Integer')) {
+      $this->_task = 'searchactiondesigner_'.CRM_Utils_Request::retrieveValue('searchactiondesigner_id', 'Integer');
+    }
     if (strpos($this->_task,'searchactiondesigner_') !== 0) {
       throw new \Exception(E::ts('Invalid search task'));
     }

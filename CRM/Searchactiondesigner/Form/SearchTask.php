@@ -14,11 +14,34 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
   private $currentUrl;
 
   /**
+   * @var string
+   */
+  private $type = '';
+
+  /**
+   * @var \CRM_Searchactiondesigner_Form_ConfigurationInterface
+   */
+  private $configurationClass;
+
+  /**
+   * @var array
+   */
+  private $configuration = [];
+
+  protected $snippet;
+
+  /**
    * Function to perform processing before displaying form (overrides parent function)
    *
    * @access public
    */
   function preProcess() {
+    $this->snippet = CRM_Utils_Request::retrieve('snippet', 'String');
+    if ($this->snippet) {
+      $this->assign('suppressForm', TRUE);
+      $this->controller->_generateQFKey = FALSE;
+    }
+
     $provider = searchactiondesigner_get_action_provider();
     $this->searchTaskId = CRM_Utils_Request::retrieve('id', 'Integer');
     CRM_Searchactiondesigner_Form_Task_Helper::setMetadata($provider->getMetadata(), $this->searchTaskId);
@@ -70,16 +93,35 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
 
     if ($this->searchTaskId) {
       $searchTask = civicrm_api3('SearchTask', 'getsingle', array('id' => $this->searchTaskId));
+      $this->type = $searchTask['type'];
+      if (isset($searchTask['configuration']) && is_array($searchTask['configuration'])) {
+        $this->configuration = $searchTask['configuration'];
+      }
       $this->assign('searchTask', $searchTask);
       $this->addFields();
       $this->addActions();
       $addActionUrl = CRM_Utils_System::url('civicrm/searchactiondesigner/action', 'reset=1&action=add&search_task_id='.$this->searchTaskId, TRUE);
       $this->assign('addActionUrl', $addActionUrl);
     }
+
+    $type = CRM_Utils_Request::retrieve('type', 'String');
+    if (!empty($type)) {
+      $this->type = $type;
+    }
+
+    if (!empty($this->type)) {
+      $configurationClass = CRM_Searchactiondesigner_Type::getConfigurationClass($this->type);
+      if ($configurationClass instanceof CRM_Searchactiondesigner_Form_ConfigurationInterface) {
+        $this->configurationClass = $configurationClass;
+      }
+    }
   }
 
   public function buildQuickForm() {
-    $this->add('hidden', 'id');
+    $configurationElements = [];
+    if (!$this->snippet) {
+      $this->add('hidden', 'id');
+    }
     if ($this->_action != CRM_Core_Action::DELETE) {
       $this->add('select', 'type', E::ts('Available for'), CRM_Searchactiondesigner_Type::getTitles(), TRUE, array(
         'style' => 'min-width:250px',
@@ -99,6 +141,9 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
         'placeholder' => E::ts('- select -'),
       ));
       $this->addRule('records_per_batch', E::ts("Invalid number"), 'numeric');
+      if ($this->configurationClass) {
+        $configurationElements = $this->configurationClass->buildConfigurationForm($this, $this->configuration);
+      }
     }
     if ($this->_action == CRM_Core_Action::ADD) {
       $this->addButtons(array(
@@ -117,6 +162,7 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
         array('type' => 'next', 'name' => E::ts('Save'), 'isDefault' => TRUE,),
         array('type' => 'cancel', 'name' => E::ts('Cancel'))));
     }
+    $this->assign('configurationElements', $configurationElements);
     parent::buildQuickForm();
   }
 
@@ -163,6 +209,10 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
     if ($this->searchTaskId) {
       $params['id'] = $this->searchTaskId;
     }
+    $params['configuration'] = [];
+    if ($this->configurationClass) {
+      $params['configuration'] = $this->configurationClass->processSubmittedValues($values);
+    }
 
     $result = civicrm_api3('SearchTask', 'create', $params);
     $redirectUrl = CRM_Utils_System::url('civicrm/searchactiondesigner/edit', array('reset' => 1, 'action' => 'update', 'id' => $result['id']));
@@ -206,7 +256,7 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
       $defaults['success_message'] = $searchTask['success_message'];
       $defaults['records_per_batch'] = $searchTask['records_per_batch'];
       $defaults['is_active'] = $searchTask['is_active'];
-      $defaults['permission'] = $searchTask['permission'];
+      $defaults['permission'] = $searchTask['permission'] ?? '';
     }
   }
 

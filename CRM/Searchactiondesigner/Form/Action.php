@@ -99,6 +99,15 @@ class CRM_Searchactiondesigner_Form_Action extends CRM_Core_Form {
       $defaults = AddConfigToQuickForm::setDefaultValues($this->actionClass, $this->actionConfiguration, $this->actionType);
       $this->setDefaults($defaults);
       AddMappingToQuickForm::addMapping('parameter_', $this->actionClass->getParameterSpecification() , $this->actionMapping, $this, $this->availableFields);
+    } else {
+      $this->assign('actionProviderElementNames', []);
+      $this->assign('actionProviderElementDescriptions', []);
+      $this->assign('actionProviderElementPreHtml', []);
+      $this->assign('actionProviderElementPostHtml', []);
+      $this->assign('actionProviderMappingFields', ['parameter_' => []]);
+      $this->assign('actionProviderGroupedMappingFields', ['parameter_' => []]);
+      $this->assign('actionProviderCollectionMappingFields', ['parameter_' => []]);
+      $this->assign('actionProviderMappingDescriptions', ['parameter_' => []]);
     }
 
     $this->addButtons(array(

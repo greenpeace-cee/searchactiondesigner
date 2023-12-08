@@ -42,6 +42,8 @@ class CRM_Searchactiondesigner_Form_Task_Helper {
   }
 
   public static function buildQuickForm($form, $search_task_id) {
+    $form->add('hidden', 'searchactiondesigner_id');
+    $form->setDefaults(['searchactiondesigner_id' => $search_task_id]);
     $fields = self::getFields($search_task_id);
     $fieldLibrary = searchactiondesigner_get_form_field_library();
     foreach($fields as $id => $field) {

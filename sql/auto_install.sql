@@ -46,6 +46,7 @@ CREATE TABLE `civicrm_search_task` (
   `records_per_batch` int unsigned NOT NULL DEFAULT 25,
   `source_file` varchar(255) NULL,
   `permission` varchar(255) NULL,
+  `configuration` longtext NULL,
   PRIMARY KEY (`id`)
 )
 ENGINE=InnoDB;

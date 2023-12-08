@@ -58,6 +58,87 @@ function searchactiondesigner_civicrm_searchTasks( $objectType, &$tasks ) {
   }
 }
 
+function searchactiondesigner_civicrm_summaryActions(array &$actions, int $contactId) {
+  $searchTasks = civicrm_api3('SearchTask', 'get', array(
+    'type' => 'contact',
+    'is_active' => 1,
+    'options' => array('limit' => 0),
+  ));
+  foreach($searchTasks['values'] as $searchTask) {
+    if (!empty($searchTask['permission']) && !\CRM_Core_Permission::check($searchTask['permission'])) {
+      continue;
+    }
+    if (empty($searchTask['configuration']) && empty($searchTask['configuration']['summary'])) {
+      continue;
+    }
+    $section = $searchTask['configuration']['summary'];
+    if ($section && $section == 'primaryActions') {
+      $section = '';
+    }
+    $weight = 0;
+    if (isset($searchTask['configuration']['weight'])) {
+      $weight = $searchTask['configuration']['weight'];
+    }
+    $task = array();
+    // We need this id later to determine which search task builder we need to instanciate
+    $id = 'searchactiondesigner_' . $searchTask['name'];
+
+    $task['title'] = $searchTask['title'];
+    $task['description'] = $searchTask['description'] ?? '';
+    $task['ref'] = 'crm-contact-' . $id;
+    $task['class'] = $id;
+    $task['key'] = $id;
+    $task['tab'] = $id;
+    $task['href'] = CRM_Utils_System::url('civicrm/searchactiondesigner/form/task/contact', ['searchactiondesigner_id' => $searchTask['id'], 'standalone' => 1, 'cids' => $contactId]);
+    $task['weight'] = $weight;
+    if ($section) {
+      $actions[$section][$id] = $task;
+    } else {
+      $actions[$id] = $task;
+    }
+  }
+}
+
+function searchactiondesigner_civicrm_caseSummary(int $caseId) {
+  $searchTasks = civicrm_api3('SearchTask', 'get', array(
+    'type' => 'case',
+    'is_active' => 1,
+    'options' => array('limit' => 0),
+  ));
+  $actions = [];
+  $taskCount = 0;
+  foreach($searchTasks['values'] as $searchTask) {
+    if (!empty($searchTask['permission']) && !\CRM_Core_Permission::check($searchTask['permission'])) {
+      continue;
+    }
+    if (empty($searchTask['configuration']) && empty($searchTask['configuration']['summary'])) {
+      continue;
+    }
+    $weight = 0;
+    $taskCount ++;
+    if (isset($searchTask['configuration']['weight'])) {
+      $weight = $searchTask['configuration']['weight'];
+    }
+    $task = array();
+    // We need this id later to determine which search task builder we need to instanciate
+    $id = 'searchactiondesigner_' . $searchTask['name'];
+
+    $task['title'] = $searchTask['title'];
+    $task['description'] = $searchTask['description'] ?? '';
+    $task['class'] = $id;
+    $task['href'] = CRM_Utils_System::url('civicrm/searchactiondesigner/form/task/case', ['searchactiondesigner_id' => $searchTask['id'], 'standalone' => '1', 'case_ids' => $caseId]);
+    $task['weight'] = $weight;
+    $actions[$weight][] = $task;
+  }
+  $smarty = CRM_Core_Smarty::singleton();
+  $vars['actions'] = $actions;
+  $vars['taskCount'] = $taskCount;
+  $smarty->pushScope($vars);
+  $content = $smarty->fetch('CRM/Searchactiondesigner/CaseSummary.tpl');
+  $smarty->popScope();
+  return array('searchactiondesigner' => array('value' => $content, 'label' => E::ts('Tasks')));
+}
+
 /**
  * Implements hook_civicrm_navigationMenu().
  *

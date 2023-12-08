@@ -74,7 +74,13 @@ function _civicrm_api3_search_task_get_spec(&$spec) {
  * @throws API_Exception
  */
 function civicrm_api3_search_task_get($params) {
-  return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  $return = _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+  foreach($return['values'] as $id => $value) {
+    if (isset($value['configuration'])) {
+      $return['values'][$id]['configuration'] = json_decode($value['configuration'], TRUE);
+    }
+  }
+  return $return;
 }
 
 /**
