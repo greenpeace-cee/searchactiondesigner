@@ -58,7 +58,10 @@ function searchactiondesigner_civicrm_searchTasks( $objectType, &$tasks ) {
   }
 }
 
-function searchactiondesigner_civicrm_summaryActions(array &$actions, int $contactId) {
+function searchactiondesigner_civicrm_summaryActions(array &$actions, int $contactId = null) {
+  if (empty($contactId)) {
+    return;
+  }
   $searchTasks = civicrm_api3('SearchTask', 'get', array(
     'type' => 'contact',
     'is_active' => 1,
