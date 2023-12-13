@@ -46,5 +46,23 @@ class CRM_Searchactiondesigner_Form_Task_Case extends CRM_Case_Form_Task {
     CRM_Searchactiondesigner_Form_Task_Helper::postProcess($this->searchTaskId, $submittedValues, $this->_entityIds);
   }
 
+  public function getSearchFormValues() {
+    $isStandAlone = CRM_Utils_Request::retrieve('standalone', 'Integer');
+    if ($isStandAlone) {
+      // Little hack for standalone use. We get the case_ids from the url and store them in the session
+      // we use the Search session page for this.
+      // And we pretend we have selected only one case id from the search.
+      $case_ids = explode(",", CRM_Utils_Request::retrieve('case_ids', 'CommaSeparatedIntegers', $this, TRUE));
+      $searchFormValues = $this->controller->exportValues('Search');
+      $searchFormValues['radio_ts'] = 'ts_sel';
+      foreach ($case_ids as $case_id) {
+        $searchFormValues[CRM_Core_Form::CB_PREFIX . $case_id] = '1';
+      }
+      $data =& $this->controller->container();
+      $data['values']['Search'] = $searchFormValues;
+    }
+    return parent::getSearchFormValues();
+  }
+
 
 }

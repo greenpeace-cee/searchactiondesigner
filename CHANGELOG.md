@@ -1,8 +1,12 @@
+Version 1.23
+
+* It is now possible to add Case Search Action to the manage case screen.
+
 Version 1.22
 ------------
 
-* It is not possible to add Contact Search Action to the contact summary screen.
-* It is not possible to add Case Search Action to the manage case screen.
+* It is now possible to add Contact Search Action to the contact summary screen.
+* It is now possible to add Case Search Action to the manage case screen.
 
 Version 1.21
 ------------
