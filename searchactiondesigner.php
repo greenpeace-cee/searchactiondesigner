@@ -114,7 +114,7 @@ function searchactiondesigner_civicrm_caseSummary(int $caseId) {
     if (!empty($searchTask['permission']) && !\CRM_Core_Permission::check($searchTask['permission'])) {
       continue;
     }
-    if (empty($searchTask['configuration']) && empty($searchTask['configuration']['summary'])) {
+    if (empty($searchTask['configuration']) || empty($searchTask['configuration']['summary'])) {
       continue;
     }
     $weight = 0;
@@ -133,6 +133,7 @@ function searchactiondesigner_civicrm_caseSummary(int $caseId) {
     $task['weight'] = $weight;
     $actions[$weight][] = $task;
   }
+  ksort($actions);
   $smarty = CRM_Core_Smarty::singleton();
   $vars['actions'] = $actions;
   $vars['taskCount'] = $taskCount;
