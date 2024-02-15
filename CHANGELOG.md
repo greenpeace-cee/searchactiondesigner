@@ -1,4 +1,10 @@
+Vresion 1.24 (not yet released)
+------------
+
+* Added the client id to the redirect url of a case action in the case view. 
+
 Version 1.23
+------------
 
 * It is now possible to add Case Search Action to the manage case screen.
 
