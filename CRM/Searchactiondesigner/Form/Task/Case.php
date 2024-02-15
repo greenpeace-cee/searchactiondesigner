@@ -19,7 +19,7 @@ class CRM_Searchactiondesigner_Form_Task_Case extends CRM_Case_Form_Task {
 
     $isStandAlone = CRM_Utils_Request::retrieve('standalone', 'Integer');
     if ($isStandAlone) {
-      $userContext = CRM_Utils_System::url('civicrm/contact/view/case', ['reset' => 1, 'id' => reset($this->_entityIds), 'action' => 'view']);
+      $userContext = CRM_Utils_System::url('civicrm/contact/view/case', ['reset' => 1, 'id' => reset($this->_entityIds), 'cid' => reset($this->getContactIDs()), 'action' => 'view']);
       $session->replaceUserContext($userContext);
     }
 
