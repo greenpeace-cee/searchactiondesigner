@@ -60,6 +60,13 @@
       <div class="clear"></div>
     </div>
     <div class="crm-section">
+      <div class="label">{$form.proceed_label.label}</div>
+      <div class="content">{$form.proceed_label.html}
+        <p class="description">{ts}Leave empty to use the default label.{/ts}</p>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div class="crm-section">
       <div class="label">{$form.success_message.label}</div>
       <div class="content">{$form.success_message.html}</div>
       <div class="clear"></div>

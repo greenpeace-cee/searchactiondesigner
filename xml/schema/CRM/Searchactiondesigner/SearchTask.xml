@@ -46,6 +46,13 @@
     <length>255</length>
   </field>
   <field>
+    <name>proceed_label</name>
+    <title>Proceed label</title>
+    <type>varchar</type>
+    <required>false</required>
+    <length>255</length>
+  </field>
+  <field>
     <name>help_text</name>
     <title>Help text</title>
     <type>text</type>

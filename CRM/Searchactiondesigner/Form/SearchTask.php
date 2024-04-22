@@ -131,6 +131,7 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
       $this->add('text', 'title', E::ts('Title'), array('size' => 50, 'maxlength' => 255), TRUE);
       $this->add( 'text','name', E::ts('Name'), array('size' => 50, 'maxlength' => 255), false);
       $this->add('text', 'description', E::ts('Description'), array('size' => 100, 'maxlength' => 255));
+      $this->add( 'text','proceed_label', E::ts('Proceed button label'), array('size' => 50, 'maxlength' => 255), false);
       $this->add('text', 'success_message', E::ts('Success Message'), array('size' => 100, 'maxlength' => 255));
       $this->add('wysiwyg', 'help_text', E::ts('Help text for this search task'), array('rows' => 6, 'cols' => 80));
       $this->add('checkbox', 'is_active', E::ts('Enabled'));
@@ -202,6 +203,7 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
     $params['title'] = $values['title'];
     $params['description'] = $values['description'];
     $params['help_text'] = $values['help_text'];
+    $params['proceed_label'] = $values['proceed_label'];
     $params['success_message'] = $values['success_message'];
     $params['records_per_batch'] = $values['records_per_batch'];
     $params['permission'] = $values['permission'];
@@ -252,6 +254,11 @@ class CRM_Searchactiondesigner_Form_SearchTask extends CRM_Core_Form {
         $defaults['help_text'] = $searchTask['help_text'];
       } else {
         $defaults['help_text'] = '';
+      }
+      if (isset($searchTask['proceed_label'])) {
+        $defaults['proceed_label'] = $searchTask['proceed_label'];
+      } else {
+        $defaults['proceed_label'] = '';
       }
       $defaults['success_message'] = $searchTask['success_message'];
       $defaults['records_per_batch'] = $searchTask['records_per_batch'];

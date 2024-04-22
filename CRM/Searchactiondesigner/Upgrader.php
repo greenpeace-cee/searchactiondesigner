@@ -35,6 +35,11 @@ class CRM_Searchactiondesigner_Upgrader extends CRM_Extension_Upgrader_Base {
     return TRUE;
   }
 
+  public function upgrade_1004() {
+    CRM_Core_DAO::executeQuery("ALTER TABLE `civicrm_search_task` ADD COLUMN `proceed_label` varchar(255) NULL;");
+    return TRUE;
+  }
+
   /**
    * Look up extension dependency error messages and display as Core Session Status
    *

@@ -39,6 +39,7 @@ CREATE TABLE `civicrm_search_task` (
   `name` varchar(255) NULL,
   `description` text NULL,
   `success_message` text NULL,
+  `proceed_label` varchar(255) NULL,
   `help_text` text NULL,
   `type` varchar(255) NOT NULL,
   `is_active` tinyint NOT NULL,

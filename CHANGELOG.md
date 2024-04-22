@@ -1,6 +1,7 @@
 Version 1.25 (not yet released)
 ------------
 
+* Fix #11 added a label for the proceed button.
 * Permission check for search task at search kit.
 
 Version 1.24

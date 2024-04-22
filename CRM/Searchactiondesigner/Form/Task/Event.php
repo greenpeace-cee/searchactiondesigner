@@ -34,7 +34,11 @@ class CRM_Searchactiondesigner_Form_Task_Event extends CRM_Event_Form_Task {
 
   public function buildQuickForm() {
     CRM_Searchactiondesigner_Form_Task_Helper::buildQuickForm($this, $this->searchTaskId);
-    $this->addDefaultButtons(E::ts('Next'), 'upload');
+    $label = E::ts('Next');
+    if (!empty($this->searchTask['proceed_label'])) {
+      $label = $this->searchTask['proceed_label'];
+    }
+    $this->addDefaultButtons($label, 'upload');
   }
 
   public function postProcess() {
