@@ -288,6 +288,9 @@ function searchactiondesigner_civicrm_searchKitTasks(&$tasks, $checkPermissions,
       'type' => ['LIKE' => 'search_kit_%'],
     ]);
     foreach ($searchTasks['values'] as $searchTask) {
+      if (!empty($searchTask['permission']) && !\CRM_Core_Permission::check($searchTask['permission'])) {
+        continue;
+      }
       $task = [];
       $id = 'searchactiondesigner_' . $searchTask['id'];
       $entity = substr($searchTask['type'], strlen('search_kit_'));

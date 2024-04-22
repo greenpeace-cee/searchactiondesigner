@@ -1,8 +1,13 @@
-Vresion 1.24
+Version 1.25 (not yet released)
 ------------
 
-* Added the client id to the redirect url of a case action in the case view. 
-* Fixed the check for the summary option and added a sorting of the weighted action 
+* Permission check for search task at search kit.
+
+Version 1.24
+------------
+
+* Added the client id to the redirect url of a case action in the case view.
+* Fixed the check for the summary option and added a sorting of the weighted action
 
 Version 1.23
 ------------
