@@ -1,4 +1,4 @@
-Version 1.25 (not yet released)
+Version 1.25
 ------------
 
 * Fix #11 added a label for the proceed button.
