@@ -251,23 +251,28 @@ function searchactiondesigner_civicrm_enable() {
  * Makes all APIv4 entities available as actions for use in SearchKit
  */
 function searchactiondesigner_search_action_designer_types(&$types) {
-  $searchKit = civicrm_api3('Extension', 'get', [
-    'key' => 'org.civicrm.search_kit',
-    'status' => 'installed',
-  ]);
-  if (!empty($searchKit['values'])) {
-    $entities = civicrm_api4('Entity', 'get', [
-      'where' => [
-        ['searchable', '!=', 'none'],
-      ],
+  try {
+    $searchKit = civicrm_api3('Extension', 'get', [
+      'key' => 'org.civicrm.search_kit',
+      'status' => 'installed',
     ]);
-    foreach ($entities as $entity) {
-      $types['search_kit_' . $entity['name']] = [
-        'title' => E::ts('Search Kit: %1', [1 => $entity['title_plural']]),
-        'class' => 'CRM_Searchactiondesigner_Form_Task_Task',
-        'id_field_title' => E::ts('%1 ID', [1 => $entity['title']]),
-      ];
+    if (!empty($searchKit['values'])) {
+      $entities = civicrm_api4('Entity', 'get', [
+        'where' => [
+          ['searchable', '!=', 'none'],
+        ],
+        'checkPermissions' => FALSE,
+      ]);
+      foreach ($entities as $entity) {
+        $types['search_kit_' . $entity['name']] = [
+          'title' => E::ts('Search Kit: %1', [1 => $entity['title_plural']]),
+          'class' => 'CRM_Searchactiondesigner_Form_Task_Task',
+          'id_field_title' => E::ts('%1 ID', [1 => $entity['title']]),
+        ];
+      }
     }
+  } catch (Throwable $e) {
+    // Do nothing.
   }
 }
 

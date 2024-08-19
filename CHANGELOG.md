@@ -1,6 +1,8 @@
 Version 1.26 (not yet released)
 ------------
 
+* Fixed issue with check permissions.
+
 Version 1.25
 ------------
 
